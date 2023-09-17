@@ -22,6 +22,7 @@ set(PROJECT_SOURCES
         mainwindow.ui
 
         matrix.h
+        structure.h
 
         figure.h
         figure.cpp

@@ -15,21 +15,24 @@ public:
     Matrix(const Matrix<T> &);
     Matrix(int, int, T**);
 
-    Matrix(const std::vector<T>&);
-    Matrix(const std::vector<std::vector<T>>&);
+    Matrix(const std::vector<T> &);
+    Matrix(const std::vector<std::vector<T>> &);
 
     ~Matrix();
 
     void set();
     void transpose();
+    std::vector<T> getVector() const;
 
     Matrix<T> operator* (const Matrix<T>& other);
+    Matrix<T> operator+ (const Matrix<T>& other);
+    Matrix<T> operator- (const Matrix<T>& other);
     Matrix<T>& operator= (const Matrix<T>& other);
 
-    //template<class T>
+    template<class N>
     friend std::ostream &operator<<(std::ostream &, Matrix<T> &);
 
-    //template<class T>
+    template<class N>
     friend QString &operator<<(QString &s, Matrix<T> &c);
 
 private:
@@ -99,7 +102,7 @@ Matrix<T>::Matrix(const std::vector<T> &vec)
 
 
 template<class T>
-Matrix<T>::Matrix(const std::vector<std::vector<T> > & vec)
+Matrix<T>::Matrix(const std::vector<std::vector<T>> & vec)
 {
     this->row = vec.size();
     this->col = vec[0].size();
@@ -169,6 +172,20 @@ void Matrix<T>::transpose() {
     std::swap(this->row, this->col);
 }
 
+// Только для матрицы 1 * n
+template<class T>
+std::vector<T> Matrix<T>::getVector() const
+{
+    if (this->row > 1)
+        return {};
+
+    std::vector<T> vec(this->col);
+    for (int i = 0; i < this->col; ++i){
+        vec.push_back(this->mtx[0][i]);
+    }
+    return vec;
+}
+
 template<class T>
 Matrix<T> Matrix<T>::operator*(const Matrix<T> &other)
 {
@@ -183,6 +200,36 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T> &other)
            for (int p = 0; p < k; p++){
               tmp.mtx[i][j] += this->mtx[i][p] * other.mtx[p][j];
            }
+       }
+    }
+    return tmp;
+}
+
+template<class T>
+Matrix<T> Matrix<T>::operator+(const Matrix<T> &other)
+{
+    int m = this->row;
+    int n = this->col;
+    Matrix tmp(m, n);
+
+    for (int i = 0; i < m; i++){
+        for (int j = 0; j < n; j++){
+            tmp.mtx = this->mtx[i][j] + other.mtx[i][j];
+       }
+    }
+    return tmp;
+}
+
+template<class T>
+Matrix<T> Matrix<T>::operator-(const Matrix<T> &other)
+{
+    int m = this->row;
+    int n = this->col;
+    Matrix tmp(m, n);
+
+    for (int i = 0; i < m; i++){
+        for (int j = 0; j < n; j++){
+            tmp.mtx = this->mtx[i][j] - other.mtx[i][j];
        }
     }
     return tmp;
