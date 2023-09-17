@@ -8,21 +8,26 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
-        MainWindow.cpp
-        MainWindow.h
-        MainWindow.ui
 
-        Canvas.h
-        Canvas.cpp
-        Canvas.ui
+        mainwindow.cpp
+        mainwindow.h
+        mainwindow.ui
+
+        matrix.h
+
+        canvas.h
+        canvas.cpp
+
+        figure.h
+        figure.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

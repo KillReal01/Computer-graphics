@@ -1,0 +1,4 @@
+/home/kbereza/qt/lab1/build/CMakeFiles/lab1.dir
+/home/kbereza/qt/lab1/build/CMakeFiles/edit_cache.dir
+/home/kbereza/qt/lab1/build/CMakeFiles/rebuild_cache.dir
+/home/kbereza/qt/lab1/build/CMakeFiles/lab1_autogen.dir

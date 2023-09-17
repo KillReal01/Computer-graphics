@@ -2,21 +2,18 @@
 #define CANVAS_H
 
 #include <QWidget>
+#include "figure.h"
 
-namespace Ui {
-class Canvas;
-}
 
 class Canvas : public QWidget
 {
-    Q_OBJECT
-
 public:
     explicit Canvas(QWidget *parent = nullptr);
-    ~Canvas();
 
 private:
-    Ui::Canvas *ui;
+    Figure* figure;
+
+    void paintEvent(QPaintEvent*);
 };
 
 #endif // CANVAS_H
