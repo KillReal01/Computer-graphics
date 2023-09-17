@@ -12,6 +12,7 @@ public:
     Figure();
     explicit Figure(const std::vector<Edge3d>& data);
 
+    std::vector<Edge2d> getPerspective();
     void draw(QPainter *p);
     void rotation(int);
     QColor getColor() const;

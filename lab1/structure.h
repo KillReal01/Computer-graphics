@@ -9,6 +9,7 @@ struct Point3d
     double y;
     double z;
 
+    Point3d() : x(0), y(0), z(0){};
     Point3d(double x, double y, double z): x(x), y(y), z(z){}
     std::vector<double> getVectorFromPoint() const{
         return std::vector<double>{x, y, z};
@@ -20,6 +21,7 @@ struct Point2d
     double x;
     double y;
 
+    Point2d() : x(0), y(0){};
     Point2d(double x, double y): x(x), y(y) {}
     std::vector<double> getVectorFromPoint() const{
         return std::vector<double>{x, y};
@@ -32,6 +34,7 @@ public:
     Point3d start;
     Point3d end;
 
+    Edge3d(){}
     Edge3d(const Point3d& start, const Point3d& end) : start(start), end(end){}
 
     void setStartVector(const Point3d& p){
@@ -57,6 +60,7 @@ public:
     Point2d start;
     Point2d end;
 
+    Edge2d(){}
     Edge2d(const Point2d& start, const Point2d& end) : start(start), end(end){}
 
     void setStartVector(const Point2d& p){
