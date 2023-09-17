@@ -23,11 +23,12 @@ set(PROJECT_SOURCES
 
         matrix.h
 
-        canvas.h
-        canvas.cpp
-
         figure.h
         figure.cpp
+
+        Canvas/Canvas.h
+        Canvas/Canvas.cpp
+        Canvas/Canvas.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

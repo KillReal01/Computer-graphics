@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "canvas.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,6 +17,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    Canvas* canvas;
+    //Canvas* canvas;
 };
 #endif // MAINWINDOW_H
