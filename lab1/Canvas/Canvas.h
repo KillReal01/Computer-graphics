@@ -2,6 +2,8 @@
 #define CANVAS_H
 
 #include <QWidget>
+#include <QPainter>
+#include "figure.h"
 
 namespace Ui {
 class Canvas;
@@ -14,9 +16,16 @@ class Canvas : public QWidget
 public:
     explicit Canvas(QWidget *parent = nullptr);
     ~Canvas();
+    void DrawFigure(const Figure& figure);
+    void setPen(const QPen& pen) { _pen = pen; }
+
+protected:
+    void paintEvent(QPaintEvent *event);
 
 private:
     Ui::Canvas *ui;
+    Figure _cur_figure;
+    QPen _pen;
 };
 
 #endif // CANVAS_H
