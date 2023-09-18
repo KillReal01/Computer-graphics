@@ -23,6 +23,7 @@ public:
     void transpose();
     void setValue(int, int, T);
     std::vector<T> getVector() const;
+    std::vector<std::vector<T>> getVectors() const;
 
     Matrix<T> operator* (const Matrix<T>&);
     Matrix<T> operator+ (const Matrix<T>&);
@@ -155,7 +156,7 @@ void Matrix<T>::setValue(int i, int j, T value) {
         this->mtx[i][j] = value;
 }
 
-// РўРѕР»СЊРєРѕ РґР»СЏ РјР°С‚СЂРёС†С‹ 1 * n
+// Только для матрицы 1 * n
 template<class T>
 std::vector<T> Matrix<T>::getVector() const
 {
@@ -165,6 +166,19 @@ std::vector<T> Matrix<T>::getVector() const
     std::vector<T> vec(this->col);
     for (int i = 0; i < this->col; ++i) {
         vec.push_back(this->mtx[0][i]);
+    }
+    return vec;
+}
+
+
+template<class T>
+std::vector<std::vector<T>> Matrix<T>::getVectors() const
+{
+    std::vector<std::vector<T>> vec(this->row, std::vector<T>(this->col));
+    for (int i = 0; i < this->row; ++i) {
+        for (int j = 0; j < this->col; ++j) {
+            vec[i][j] = this->mtx[i][j];
+        }
     }
     return vec;
 }
@@ -249,7 +263,7 @@ std::ostream& operator<<(std::ostream& os, Matrix<T>& a) {
 }
 
 template <class T>
-bool Matrix<T>::operator== (const Matrix<T>& other) const {
+bool Matrix<T>::operator== (const Matrix<T>& other) const{
     if (this->row != other.row || this->col != other.col)
         return false;
     for (int i = 0; i < row; i++) {
