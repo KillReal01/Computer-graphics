@@ -7,8 +7,12 @@
 #include <cmath>
 
 namespace {
+    double angleToRadian(int angle){
+        return angle * 180 * M_1_PI;
+    }
+
     Matrix<double> createRotationMatrix3d(int angle) {
-        double tmp = angle * 180 * M_1_PI;
+        double tmp = angleToRadian(angle);
         std::vector<std::vector<double>> vec{
             {cos(tmp), -sin(tmp), 0},
             {sin(tmp), cos(tmp), 0},
@@ -20,7 +24,7 @@ namespace {
 
     Point2d convertTo2d(Point3d& v) {
         int angle = 45;
-        double value = sin(angle * 180 * M_1_PI);
+        double value = sin(angleToRadian(angle));
         int sign = v.y ? -1 : 1;
         return Point2d(v.x + value * sign * v.y, v.z + value * sign * v.y);
     }
