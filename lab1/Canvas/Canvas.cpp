@@ -1,10 +1,12 @@
 #include "Canvas.h"
 #include "ui_Canvas.h"
+#include <QDebug>
 
 Canvas::Canvas(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Canvas)
     , _pen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap))
+    , _zoom(100)
 {
     ui->setupUi(this);
 }
@@ -26,5 +28,10 @@ void Canvas::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setPen(_pen);
 
-    painter.drawEllipse(100, 50, 150, 150);
+
+    for (const auto& edge : _cur_figure.getPerspective()) {
+        // painter.drawLine(0, 0, 400, 400);
+        painter.drawLine(edge.getStartVector().x * _zoom, edge.getStartVector().y * _zoom, edge.getEndVector().x * _zoom, edge.getEndVector().y * _zoom);
+        qDebug() << edge.getStartVector().x * _zoom << " " << edge.getStartVector().y * _zoom << " " << edge.getEndVector().x * _zoom << " " << edge.getEndVector().y * _zoom;
+    }
 }

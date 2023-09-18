@@ -26,6 +26,7 @@ private:
     Ui::Canvas *ui;
     Figure _cur_figure;
     QPen _pen;
+    double _zoom;
 };
 
 #endif // CANVAS_H
