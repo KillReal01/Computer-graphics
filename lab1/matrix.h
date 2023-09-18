@@ -88,7 +88,6 @@ template<class T>
 Matrix<T>::Matrix(const std::vector<T>& vec) : row(1), col(vec.size())
 {
     this->mtx = this->allocate_memory(this->row, this->col);
-
     for (int j = 0; j < this->col; j++) {
         this->mtx[0][j] = vec[j];
     }
