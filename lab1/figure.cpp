@@ -23,7 +23,7 @@ namespace {
     }
 
     Point2d convertTo2d(Point3d& v) {
-        int angle = 30;
+        int angle = 20;
         double value = sin(angleToRadian(angle));
         int sign = v.y ? -1 : 1;
         return Point2d(v.x + value * sign * v.y, v.z + value * sign * v.y);

@@ -29,7 +29,7 @@ void Canvas::paintEvent(QPaintEvent *event)
     painter.setPen(_pen);
 
     int delta_x = 400;
-    int delta_y = 200;
+    int delta_y = 250;
 
     for (const auto& edge : _cur_figure.getPerspective()) {
         // painter.drawLine(0, 0, 400, 400);
