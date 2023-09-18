@@ -42,7 +42,7 @@ std::vector<Edge<Point2d>> Figure::getPerspective()
     std::vector<Edge<Point2d>> res(data.size());
     for (auto& edge : data) {
         Point2d start = convertTo2d(edge.start);
-        Point2d end = convertTo2d(edge.start);
+        Point2d end = convertTo2d(edge.end);
         Edge<Point2d> e(start, end);
         res.push_back(e);
     }
