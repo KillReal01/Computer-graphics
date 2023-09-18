@@ -263,7 +263,7 @@ std::ostream& operator<<(std::ostream& os, Matrix<T>& a) {
 }
 
 template <class T>
-bool Matrix<T>::operator== (const Matrix<T>& other) const{
+bool Matrix<T>::operator== (const Matrix<T>& other) const {
     if (this->row != other.row || this->col != other.col)
         return false;
     for (int i = 0; i < row; i++) {

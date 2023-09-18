@@ -1,11 +1,13 @@
+#define _USE_MATH_DEFINES
+
 #include "figure.h"
 #include "matrix.h"
+
 #include <vector>
 #include <cmath>
 
-
-namespace  {
-    Matrix<double> createRotationMatrix3d(int angle){
+namespace {
+    Matrix<double> createRotationMatrix3d(int angle) {
         double tmp = angle * 180 * M_1_PI;
         std::vector<std::vector<double>> vec{
             {cos(tmp), -sin(tmp), 0},
@@ -17,8 +19,10 @@ namespace  {
     }
 
     Point2d convertTo2d(Point3d& v) {
+        int angle = 45;
+        double value = sin(angle * 180 * M_1_PI);
         int sign = v.y ? -1 : 1;
-        return Point2d(v.x + 0.7 * sign * v.y, v.z + 0.7 * sign * v.y);
+        return Point2d(v.x + value * sign * v.y, v.z + value * sign * v.y);
     }
 }
 
@@ -26,31 +30,28 @@ namespace  {
 Figure::Figure() {}
 
 
-Figure::Figure(const std::vector<Edge3d> &data) : data(data){}
+Figure::Figure(const std::vector<Edge<Point3d>>& data) : data(data) {}
 
 
-std::vector<Edge2d> Figure::getPerspective()
+std::vector<Edge<Point2d>> Figure::getPerspective()
 {
-    std::vector<Edge2d> res(data.size());
-    for (auto & edge : data){
+    std::vector<Edge<Point2d>> res(data.size());
+    for (auto& edge : data) {
         Point2d start = convertTo2d(edge.start);
         Point2d end = convertTo2d(edge.start);
-        Edge2d e(start, end);
+        Edge<Point2d> e(start, end);
         res.push_back(e);
     }
     return res;
 }
 
 
-void Figure::draw(QPainter *p){}
-
-
 void Figure::rotation(int angle)
 {
     Matrix<double> rotate = createRotationMatrix3d(angle);
-    for (int i = 0; i < data.size(); ++i){
-        Point3d start = data[i].getStartVector();
-        Point3d end = data[i].getEndVector();
+    for (auto& edge3d : data){
+        Point3d start = edge3d.getStartVector();
+        Point3d end = edge3d.getEndVector();
 
         Matrix<double> a(start.getVectorFromPoint());
         Matrix<double> b(end.getVectorFromPoint());
@@ -60,17 +61,12 @@ void Figure::rotation(int angle)
 
         auto tmp = a.getVector();
         start = Point3d(tmp[0], tmp[1], tmp[2]);
-        data[i].setStartVector(start);
+        edge3d.setStartVector(start);
 
         tmp = b.getVector();
         end = Point3d(tmp[0], tmp[1], tmp[2]);
-        data[i].setEndVector(end);
+        edge3d.setEndVector(end);
     }
 }
 
-
-QColor Figure::getColor() const
-{
-    return this->color;
-}
 
