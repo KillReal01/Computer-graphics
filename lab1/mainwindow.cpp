@@ -29,9 +29,22 @@ MainWindow::MainWindow(QWidget *parent)
     };
     Figure figure(edges);
     ui->canvas->DrawFigure(figure);
+    ui->horizontalScrollBar->setMinimum(0);
+    ui->horizontalScrollBar->setMaximum(360);
+    _prev_angle = 0;
+    ui->horizontalScrollBar->setValue(_prev_angle);
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_horizontalScrollBar_valueChanged(int value)
+{
+    ui->canvas->Rotation(value - _prev_angle);
+    _prev_angle = value;
+    qDebug() << "angle:: " << value;
+}
+

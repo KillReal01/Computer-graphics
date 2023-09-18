@@ -159,7 +159,7 @@ std::vector<T> Matrix<T>::getVector() const
     if (this->row > 1)
         return {};
 
-    std::vector<T> vec(this->col);
+    std::vector<T> vec;
     for (int i = 0; i < this->col; ++i) {
         vec.push_back(this->mtx[0][i]);
     }

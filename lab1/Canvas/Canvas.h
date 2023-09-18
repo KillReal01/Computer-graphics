@@ -18,6 +18,7 @@ public:
     ~Canvas();
     void DrawFigure(const Figure& figure);
     void setPen(const QPen& pen) { _pen = pen; }
+    void Rotation(int angle);
 
 protected:
     void paintEvent(QPaintEvent *event);
