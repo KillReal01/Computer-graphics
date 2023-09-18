@@ -156,7 +156,7 @@ void Matrix<T>::setValue(int i, int j, T value) {
         this->mtx[i][j] = value;
 }
 
-// Только для матрицы 1 * n
+// only for matrix 1 * n
 template<class T>
 std::vector<T> Matrix<T>::getVector() const
 {
