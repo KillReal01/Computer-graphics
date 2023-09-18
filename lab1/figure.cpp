@@ -5,17 +5,14 @@
 
 #include <vector>
 #include <cmath>
-#include <QDebug>
-#include <qmath.h>>
 
 namespace {
     double angleToRadian(int angle){
-        return (angle * 3.1415) / 180;
+        return (angle * M_PI) / 180;
     }
 
     Matrix<double> createRotationMatrix3d(int angle) {
         double tmp = angleToRadian(angle);
-        qDebug() << "tmp:: " << tmp;
         std::vector<std::vector<double>> vec{
             {cos(tmp), -sin(tmp), 0},
             {sin(tmp), cos(tmp), 0},

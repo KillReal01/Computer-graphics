@@ -11,29 +11,30 @@ MainWindow::MainWindow(QWidget *parent)
     //{0.17, 0.98, 0}, {0, 0, 0}, {0.98, -0.17, 0}, {1.15, 0.81, 0},
     //{0.17, 0.98, 1}, {0, 0, 1}, {0.98, -0.17, 1}, {1.15, 0.81, 1}
     std::vector<Edge<Point3d>> edges {
-        Edge<Point3d>({0.17, 0.98, 0}, {0, 0, 0}),
-        Edge<Point3d>({0.17, 0.98, 0}, {1.15, 0.81, 0}),
-        Edge<Point3d>({0.17, 0.98, 0}, {0.17, 0.98, 1}),
 
-        Edge<Point3d>({0.98, -0.17, 0}, {1.15, 0.81, 0}),
-        Edge<Point3d>({0.98, -0.17, 0}, {0.98, -0.17, 1}),
-        Edge<Point3d>({0.98, -0.17, 0}, {0, 0, 0}),
+        Edge<Point3d>({1, 1, -1}, {1, -1, -1}),
+        Edge<Point3d>({-1, 1, -1}, {1, 1, -1}),
+        Edge<Point3d>({1, 1, -1}, {1, 1, 1}),
 
-        Edge<Point3d>({0, 0, 1}, {0.17, 0.98, 1}),
-        Edge<Point3d>({0, 0, 1}, {0.98, -0.17, 1}),
-        Edge<Point3d>({0, 0, 1}, {0, 0, 0}),
+        Edge<Point3d>({-1, -1, -1}, {1, -1, -1}),
+        Edge<Point3d>({-1, -1, -1}, {-1, 1, -1}),
+        Edge<Point3d>({-1, -1, -1}, {-1, -1, 1}),
 
-        Edge<Point3d>({1.15, 0.81, 1}, {0.98, -0.17, 1}),
-        Edge<Point3d>({1.15, 0.81, 1}, {0.17, 0.98, 1}),
-        Edge<Point3d>({1.15, 0.81, 1}, {1.15, 0.81, 0}),
+        Edge<Point3d>({-1, 1, 1}, {-1, 1, -1}),
+        Edge<Point3d>({-1, 1, 1}, {-1, -1, 1}),
+        Edge<Point3d>({-1, 1, 1}, {1, 1, 1}),
+
+        Edge<Point3d>({1, -1, 1}, {-1, -1, 1}),
+        Edge<Point3d>({1, -1, 1}, {1, 1, 1}),
+        Edge<Point3d>({1, -1, 1}, {1, -1, -1}),
+
     };
+
     Figure figure(edges);
     ui->canvas->DrawFigure(figure);
-    ui->horizontalScrollBar->setMinimum(0);
-    ui->horizontalScrollBar->setMaximum(360);
+    ui->horizontalScrollBar->setRange(0, 360);
     _prev_angle = 0;
     ui->horizontalScrollBar->setValue(_prev_angle);
-
 }
 
 MainWindow::~MainWindow()
@@ -45,6 +46,5 @@ void MainWindow::on_horizontalScrollBar_valueChanged(int value)
 {
     ui->canvas->Rotation(value - _prev_angle);
     _prev_angle = value;
-    qDebug() << "angle:: " << value;
 }
 
