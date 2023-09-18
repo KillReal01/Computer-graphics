@@ -85,10 +85,8 @@ Matrix<T>::Matrix(int n, int m, T** mtx) : row(n), col(m)
 
 
 template<class T>
-Matrix<T>::Matrix(const std::vector<T>& vec)
+Matrix<T>::Matrix(const std::vector<T>& vec) : row(1), col(vec.size())
 {
-    this->row = 1;
-    this->col = vec.size();
     this->mtx = this->allocate_memory(this->row, this->col);
 
     for (int j = 0; j < this->col; j++) {
@@ -98,10 +96,8 @@ Matrix<T>::Matrix(const std::vector<T>& vec)
 
 
 template<class T>
-Matrix<T>::Matrix(const std::vector<std::vector<T>>& vec)
+Matrix<T>::Matrix(const std::vector<std::vector<T>>& vec) : row(vec.size()), col(vec[0].size())
 {
-    this->row = vec.size();
-    this->col = vec[0].size();
     this->mtx = this->allocate_memory(this->row, this->col);
     for (int i = 0; i < this->row; i++) {
         for (int j = 0; j < this->col; j++) {
