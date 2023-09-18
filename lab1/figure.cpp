@@ -5,14 +5,17 @@
 
 #include <vector>
 #include <cmath>
+#include <QDebug>
+#include <qmath.h>>
 
 namespace {
     double angleToRadian(int angle){
-        return angle * 180 * M_1_PI;
+        return (angle * 3.1415) / 180;
     }
 
     Matrix<double> createRotationMatrix3d(int angle) {
         double tmp = angleToRadian(angle);
+        qDebug() << "tmp:: " << tmp;
         std::vector<std::vector<double>> vec{
             {cos(tmp), -sin(tmp), 0},
             {sin(tmp), cos(tmp), 0},
@@ -23,7 +26,7 @@ namespace {
     }
 
     Point2d convertTo2d(Point3d& v) {
-        int angle = 45;
+        int angle = 30;
         double value = sin(angleToRadian(angle));
         int sign = v.y ? -1 : 1;
         return Point2d(v.x + value * sign * v.y, v.z + value * sign * v.y);
@@ -39,7 +42,8 @@ Figure::Figure(const std::vector<Edge<Point3d>>& data) : data(data) {}
 
 std::vector<Edge<Point2d>> Figure::getPerspective()
 {
-    std::vector<Edge<Point2d>> res(data.size());
+    std::vector<Edge<Point2d>> res;
+    res.reserve(data.size());
     for (auto& edge : data) {
         Point2d start = convertTo2d(edge.start);
         Point2d end = convertTo2d(edge.end);

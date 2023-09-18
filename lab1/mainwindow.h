@@ -15,8 +15,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_horizontalScrollBar_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
+    int _prev_angle;
     //Canvas* canvas;
 };
 #endif // MAINWINDOW_H
