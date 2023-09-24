@@ -31,6 +31,9 @@ set(PROJECT_SOURCES
 
         vertex.h
         vertex.cpp
+
+        Line.h
+        Line.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "vertex.h"
+#include "Line.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,9 +19,15 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    std::vector<TVertex*> arr;
+    std::vector<TVertex*> _vertexes;
+    void repaint();
+    std::vector<Line*> _lines;
 
 public slots:
     void changeVertex();
+
+private slots:
+    void on_buttonAdd_clicked();
+    void on_buttonRemove_clicked();
 };
 #endif // MAINWINDOW_H
