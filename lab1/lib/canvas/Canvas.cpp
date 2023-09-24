@@ -28,15 +28,15 @@ void Canvas::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setPen(_pen);
 
-    int delta_x = 400;
-    int delta_y = 250;
+    const int delta_x = 400;
+    const int delta_y = 250;
 
     for (const auto& edge : _cur_figure.getPerspective()) {
         // painter.drawLine(0, 0, 400, 400);
-        int x1 = qRound(edge.getStartVector().x * _zoom + delta_x);
-        int y1 = qRound(edge.getStartVector().y * _zoom + delta_y);
-        int x2 = qRound(edge.getEndVector().x * _zoom + delta_x);
-        int y2 = qRound(edge.getEndVector().y * _zoom + delta_y);
+        const int x1 = qRound(edge.getStartVector().x * _zoom + delta_x);
+        const int y1 = qRound(edge.getStartVector().y * _zoom + delta_y);
+        const int x2 = qRound(edge.getEndVector().x * _zoom + delta_x);
+        const int y2 = qRound(edge.getEndVector().y * _zoom + delta_y);
 
         painter.drawLine(x1, y1, x2, y2);
         //qDebug() << edge.getStartVector().x * _zoom << " " << edge.getStartVector().y * _zoom << " " << edge.getEndVector().x * _zoom << " " << edge.getEndVector().y * _zoom;
