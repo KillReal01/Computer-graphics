@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 #include "figure.h"
+#include <QGraphicsScene>
 
 namespace Ui {
 class Canvas;
@@ -31,6 +32,7 @@ private:
     double _zoom;
 
     std::vector<std::pair<int, int>> _lines;
+    QGraphicsScene* _scene;
 };
 
 #endif // CANVAS_H

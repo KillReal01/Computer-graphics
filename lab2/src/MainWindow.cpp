@@ -32,24 +32,45 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    const int x1 = 000, y1 = 000;
-    const int x2 = 600, y2 = 000;
-    const int x3 = 600, y3 = 600;
-    const int x4 = 800, y4 = 100;
-    const int x5 = 1000, y5 = 300;
-    std::vector<std::pair<int, int>> arr {{x1, y1}, {x2, y2}, {x3, y3}, {x4, y4}, {x5, y5}};
-    std::vector<std::pair<int, int>> ans;
-    for( float i = 0 ; i < 1 ; i += 0.01 )
     {
-        auto point = getBezierPoint(arr, i).back();
-        double x = point.first;
-        double y = point.second;
+        const int x1 = 000, y1 = 000;
+        const int x2 = 600, y2 = 000;
+        const int x3 = 600, y3 = 600;
+        const int x4 = 800, y4 = 100;
+        const int x5 = 1000, y5 = 300;
+        std::vector<std::pair<int, int>> arr {{x1, y1}, {x2, y2}, {x3, y3}, {x4, y4}, {x5, y5}};
+        std::vector<std::pair<int, int>> ans;
+        for( float i = 0 ; i < 1 ; i += 0.01 )
+        {
+            auto point = getBezierPoint(arr, i).back();
+            double x = point.first;
+            double y = point.second;
 
-        ans.push_back({x, y});
-        qDebug() << "(" << x << ", " << y << ")";
+            ans.push_back({x, y});
+            qDebug() << "(" << x << ", " << y << ")";
+        }
+        ui->widget->DrawLines(ans);
     }
 
-    ui->widget->DrawLines(ans);
+
+    {
+        const int x1 = 200, y1 = 700;
+        const int x2 = 400, y2 = 200;
+        const int x3 = 600, y3 = 100;
+        const int x4 = 800, y4 = 500;
+        std::vector<std::pair<int, int>> arr {{x1, y1}, {x2, y2}, {x3, y3}, {x4, y4}};
+        std::vector<std::pair<int, int>> ans;
+        for( float i = 0 ; i < 1 ; i += 0.01 )
+        {
+            auto point = getBezierPoint(arr, i).back();
+            double x = point.first;
+            double y = point.second;
+
+            ans.push_back({x, y});
+            qDebug() << "(" << x << ", " << y << ")";
+        }
+        ui->widget->DrawLines(ans);
+    }
 }
 
 MainWindow::~MainWindow()

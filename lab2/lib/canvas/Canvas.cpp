@@ -2,8 +2,8 @@
 #include "ui_Canvas.h"
 #include <QDebug>
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HIGHT = 600;
+const int SCREEN_WIDTH = 1000;
+const int SCREEN_HEIGHT = 1000;
 
 Canvas::Canvas(QWidget *parent)
     : QWidget(parent)
@@ -12,11 +12,19 @@ Canvas::Canvas(QWidget *parent)
     , _zoom(100)
 {
     ui->setupUi(this);
+
+    _scene = new QGraphicsScene(this);
+    _scene->setSceneRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    ui->graphicsView->setScene(_scene);
+    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+    ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 }
 
 Canvas::~Canvas()
 {
     delete ui;
+    delete _scene;
 }
 
 void Canvas::DrawFigure(const Figure& figure)
@@ -28,22 +36,17 @@ void Canvas::DrawFigure(const Figure& figure)
 void Canvas::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-    QPainter painter(this);
-    painter.setPen(_pen);
-    //painter.drawLine(0, 0, 300, 300);
-    //painter.drawLine(300, 300, 600, 800);
-
-    for (int i = 0; i < _lines.size() - 1; i++) {
-        const auto& pointA = _lines[i];
-        const auto& pointB = _lines[i + 1];
-        painter.drawLine(pointA.first, SCREEN_HIGHT - pointA.second, pointB.first, SCREEN_HIGHT - pointB.second);
-    }
 }
 
 void Canvas::DrawLines(const std::vector<std::pair<int, int>>& arr)
 {
-    _lines = arr;
-    repaint();
+    _scene->clear();
+    for (int i = 0; i < arr.size() - 1; i++) {
+        const auto& pointA = arr[i];
+        const auto& pointB = arr[i + 1];
+        qDebug() << pointA.first << pointA.second<< pointB.first<< pointB.second;
+        _scene->addLine(QLine(pointA.first, SCREEN_HEIGHT - pointA.second, pointB.first, SCREEN_HEIGHT - pointB.second));
+    }
 }
 
 void Canvas::Rotation(int angle)
