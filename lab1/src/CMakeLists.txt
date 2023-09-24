@@ -27,9 +27,9 @@ set(PROJECT_SOURCES
         figure.h
         figure.cpp
 
-        Canvas/Canvas.h
-        Canvas/Canvas.cpp
-        Canvas/Canvas.ui
+        ../lib/canvas/Canvas.h
+        ../lib/canvas/Canvas.cpp
+        ../lib/canvas/Canvas.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
