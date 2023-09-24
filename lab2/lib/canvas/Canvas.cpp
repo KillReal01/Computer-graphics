@@ -1,6 +1,7 @@
 #include "Canvas.h"
 #include "ui_Canvas.h"
 #include <QDebug>
+#include "vertex.h"
 
 const int SCREEN_WIDTH = 1000;
 const int SCREEN_HEIGHT = 1000;
@@ -40,13 +41,40 @@ void Canvas::paintEvent(QPaintEvent *event)
 
 void Canvas::DrawLines(const std::vector<std::pair<int, int>>& arr)
 {
-    _scene->clear();
     for (int i = 0; i < arr.size() - 1; i++) {
         const auto& pointA = arr[i];
         const auto& pointB = arr[i + 1];
         qDebug() << pointA.first << pointA.second<< pointB.first<< pointB.second;
-        _scene->addLine(QLine(pointA.first, SCREEN_HEIGHT - pointA.second, pointB.first, SCREEN_HEIGHT - pointB.second));
+        auto* line = new Line(pointA.first, pointA.second, pointB.first, pointB.second);
+        _lines.push_back(line);
+        //_scene->addLine(*line);
+        _scene->addItem(line);
     }
+}
+
+void DrawSline(std::vector<QGraphicsItem*> items)
+{
+
+}
+
+void Canvas::DrawItem(QGraphicsItem* item)
+{
+    _scene->addItem(item);
+}
+
+void Canvas::Clear()
+{
+    for (auto& q : _lines) {
+        delete q;
+    }
+    _lines.clear();
+    //_scene->clear();
+    /*_scene = new QGraphicsScene(this);
+    _scene->setSceneRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    ui->graphicsView->setScene(_scene);
+    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+    ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);*/
 }
 
 void Canvas::Rotation(int angle)

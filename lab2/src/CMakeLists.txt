@@ -28,6 +28,9 @@ set(PROJECT_SOURCES
         ../lib/canvas/Canvas.cpp
         ../lib/canvas/Canvas.h
         ../lib/canvas/Canvas.ui
+
+        vertex.h
+        vertex.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
