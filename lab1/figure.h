@@ -9,10 +9,12 @@ class Figure
 {
 public:
     Figure();
-    explicit Figure(const std::vector<Edge<Point3d>>& data);
+    Figure(const std::vector<Edge<Point3d>>& data);
+    Figure(const Figure&);
 
+    std::vector<Edge<Point3d>> getData() const;
     std::vector<Edge<Point2d>> getPerspective();
-    void rotation(int);
+    void rotation(int, int);
 
 private:
     std::vector<Edge<Point3d>> data;

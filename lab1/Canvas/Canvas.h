@@ -25,7 +25,7 @@ protected:
 
 private:
     Ui::Canvas *ui;
-    Figure _cur_figure;
+    Figure _cur_figure, _const_figure;
     QPen _pen;
     double _zoom;
 };
