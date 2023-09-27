@@ -22,7 +22,7 @@ namespace {
         return mtx;
     }
 
-    Point2d convertTo2d(Point3d& v) {
+    Point2d convertTo2d(const Point3d& v) {
         int radian = 17;
         double value = sin(radianToAngle(radian));
         int sign = v.y ? -1 : 1;
@@ -37,7 +37,7 @@ Figure::Figure() {}
 Figure::Figure(const std::vector<Edge<Point3d>>& data) : data(data) {}
 
 
-std::vector<Edge<Point2d>> Figure::getPerspective()
+std::vector<Edge<Point2d>> Figure::getPerspective() const
 {
     std::vector<Edge<Point2d>> res;
     res.reserve(data.size());

@@ -27,6 +27,12 @@ set(PROJECT_SOURCES
         figure.h
         figure.cpp
 
+        Line.h
+        Line.cpp
+
+        vertex.h
+        vertex.cpp
+
         ../lib/canvas/Canvas.h
         ../lib/canvas/Canvas.cpp
         ../lib/canvas/Canvas.ui

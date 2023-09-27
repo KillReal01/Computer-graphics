@@ -49,11 +49,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 //    };
 
-    Figure figure(edges);
-    ui->canvas->DrawFigure(figure);
+    _figure = new Figure(edges);
+    //ui->canvas->DrawFigure(*_figure);
     ui->horizontalScrollBar->setRange(0, 360);
     _prev_angle = 0;
     ui->horizontalScrollBar->setValue(_prev_angle);
+    repaint("0");
 }
 
 MainWindow::~MainWindow()
@@ -61,9 +62,32 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::repaint(const QString& angle)
+{
+    for (auto& line : _lines)
+        delete line;
+    _lines.clear();
+
+    int delta_x = 300;
+    int delta_y = 250;
+    int zoom = 100;
+    for (const auto& edge : _figure->getPerspective()) {
+        int x1 = qRound(edge.getStartVector().x * zoom + delta_x);
+        int y1 = qRound(edge.getStartVector().y * zoom + delta_y);
+        int x2 = qRound(edge.getEndVector().x * zoom + delta_x);
+        int y2 = qRound(edge.getEndVector().y * zoom + delta_y);
+        auto* line = new Line(x1, y1, x2, y2);
+
+        _lines.push_back(line);
+    }
+    ui->canvas->DrawText(angle);
+    ui->canvas->DrawLines(_lines);
+}
+
 void MainWindow::on_horizontalScrollBar_valueChanged(int value)
 {
-    ui->canvas->Rotation(value - _prev_angle);
+    _figure->rotation(value - _prev_angle);
+    repaint(QString::number(value));
     _prev_angle = value;
 }
 
