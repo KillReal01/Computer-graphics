@@ -78,7 +78,8 @@ void MainWindow::repaint(const QString& angle)
 
         _lines.push_back(line);
     }
-    ui->canvas->DrawText(angle);
+    QString str = "Angle = " + angle + "°";
+    ui->canvas->DrawText(str);
     ui->canvas->DrawLines(_lines);
 }
 
