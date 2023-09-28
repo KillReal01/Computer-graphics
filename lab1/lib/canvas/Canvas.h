@@ -1,12 +1,15 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
+#include "Line.h"
+#include "direction.h"
+#include "figure.h"
+
 #include <QWidget>
 #include <QPainter>
-#include "figure.h"
 #include <QGraphicsScene>
 #include <QGraphicsItem>
-#include "Line.h"
+
 
 namespace Ui {
 class Canvas;

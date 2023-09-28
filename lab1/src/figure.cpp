@@ -2,6 +2,7 @@
 
 #include "figure.h"
 #include "matrix.h"
+#include "direction.h"
 
 #include <vector>
 #include <cmath>
@@ -11,7 +12,29 @@ namespace {
         return (radian * M_PI) / 180;
     }
 
-    Matrix<double> createRotationMatrix3d(int angle) {
+    Matrix<double> rotationOX(int angle) {
+        double tmp = radianToAngle(angle);
+        std::vector<std::vector<double>> vec{
+            {1, 0, 0},
+            {0, cos(tmp), -sin(tmp)},
+            {0, sin(tmp), cos(tmp)}
+        };
+        Matrix<double> mtx(vec);
+        return mtx;
+    }
+
+    Matrix<double> rotationOY(int angle) {
+        double tmp = radianToAngle(angle);
+        std::vector<std::vector<double>> vec{
+            {cos(tmp), 0, sin(tmp)},
+            {0, 1, 0},
+            {-sin(tmp), 0, cos(tmp)}
+        };
+        Matrix<double> mtx(vec);
+        return mtx;
+    }
+
+    Matrix<double> rotationOZ(int angle) {
         double tmp = radianToAngle(angle);
         std::vector<std::vector<double>> vec{
             {cos(tmp), -sin(tmp), 0},
@@ -23,10 +46,11 @@ namespace {
     }
 
     Point2d convertTo2d(const Point3d& v) {
-        int radian = 17;
-        double value = sin(radianToAngle(radian));
-        int sign = v.y ? -1 : 1;
-        return Point2d(v.x + value * sign * v.y, v.z + value * sign * v.y);
+        Matrix<double> tmp(v.getVectorFromPoint());
+        tmp = tmp * rotationOX(10);
+        std::vector<double> vec = tmp.getVector();
+        Point3d np{vec[0], vec[1], vec[2]};
+        return Point2d(np.x, np.z);
     }
 }
 
@@ -36,12 +60,17 @@ Figure::Figure() {}
 
 Figure::Figure(const std::vector<Edge<Point3d>>& data) : data(data) {}
 
+std::vector<Edge<Point3d> > Figure::getData() const
+{
+    return data;
+}
+
 
 std::vector<Edge<Point2d>> Figure::getPerspective() const
 {
     std::vector<Edge<Point2d>> res;
     res.reserve(data.size());
-    for (auto& edge : data) {
+    for (const auto& edge : data) {
         Point2d start = convertTo2d(edge.start);
         Point2d end = convertTo2d(edge.end);
         Edge<Point2d> e(start, end);
@@ -51,9 +80,22 @@ std::vector<Edge<Point2d>> Figure::getPerspective() const
 }
 
 
-void Figure::rotation(int angle)
+void Figure::rotation(int direction, int angle)
 {
-    Matrix<double> rotate = createRotationMatrix3d(angle);
+    Matrix<double> rotate;
+    switch (direction){
+        case x:
+            rotate = rotationOX(angle);
+            break;
+        case y:
+            rotate = rotationOY(angle);
+            break;
+        case z:
+            rotate = rotationOZ(angle);
+            break;
+    }
+
+
     for (auto& edge3d : data){
         Point3d start = edge3d.getStartVector();
         Point3d end = edge3d.getEndVector();

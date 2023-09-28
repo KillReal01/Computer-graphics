@@ -8,9 +8,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //{0.17, 0.98, 0}, {0, 0, 0}, {0.98, -0.17, 0}, {1.15, 0.81, 0},
-    //{0.17, 0.98, 1}, {0, 0, 1}, {0.98, -0.17, 1}, {1.15, 0.81, 1}
-
     //пирамида
     std::vector<Edge<Point3d>> edges {
 
@@ -71,6 +68,7 @@ void MainWindow::repaint(const QString& angle)
     int delta_x = 300;
     int delta_y = 250;
     int zoom = 100;
+
     for (const auto& edge : _figure->getPerspective()) {
         int x1 = qRound(edge.getStartVector().x * zoom + delta_x);
         int y1 = qRound(edge.getStartVector().y * zoom + delta_y);
@@ -86,7 +84,7 @@ void MainWindow::repaint(const QString& angle)
 
 void MainWindow::on_horizontalScrollBar_valueChanged(int value)
 {
-    _figure->rotation(value - _prev_angle);
+    _figure->rotation(DIRECTION::z, value - _prev_angle);
     repaint(QString::number(value));
     _prev_angle = value;
 }

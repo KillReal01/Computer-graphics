@@ -33,6 +33,8 @@ set(PROJECT_SOURCES
         vertex.h
         vertex.cpp
 
+        direction.h
+
         ../lib/canvas/Canvas.h
         ../lib/canvas/Canvas.cpp
         ../lib/canvas/Canvas.ui

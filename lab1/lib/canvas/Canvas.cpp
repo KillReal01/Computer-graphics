@@ -88,6 +88,6 @@ void Canvas::DrawItem(QGraphicsItem* item)
 
 void Canvas::Rotation(int angle)
 {
-    _cur_figure.rotation(angle);
+    _cur_figure.rotation(DIRECTION::z, angle);
     repaint();
 }

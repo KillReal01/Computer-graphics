@@ -12,7 +12,8 @@ public:
     explicit Figure(const std::vector<Edge<Point3d>>& data);
 
     std::vector<Edge<Point2d>> getPerspective() const;
-    void rotation(int);
+    std::vector<Edge<Point3d>> getData() const;
+    void rotation(int, int);
 
 private:
     std::vector<Edge<Point3d>> data;
