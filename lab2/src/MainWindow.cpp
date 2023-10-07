@@ -1,3 +1,40 @@
+#include "MainWindow.h"
+#include "./ui_MainWindow.h"
+#include <QDebug>
+
+namespace
+{
+
+    double getPt(int n1, int n2, double perc)
+    {
+        double diff = n2 - n1;
+        return n1 + ( diff * perc );
+    }
+
+    std::vector<std::pair<int, int>> getBezierPoint(const std::vector<std::pair<int, int>>& arr, double perc) {
+        if (arr.size() <= 1) {
+            return arr;
+        }
+
+        std::vector<std::pair<int, int>> ans;
+        for (int i = 0; i < arr.size() - 1; i++) {
+            const auto& pointA = arr[i];
+            const auto& pointB = arr[i + 1];
+
+            double x = getPt(pointA.first, pointB.first, perc);
+            double y = getPt(pointA.second, pointB.second, perc);
+
+            ans.push_back({x, y});
+        }
+
+        return getBezierPoint(ans, perc);
+    }
+
+} // namespace
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -8,7 +45,8 @@
     };
 
     for (int i = 0; i < 3; i++) {
-        TVertex* vertex = new TVertex(QString::number(i));
+        //new name for points
+        TVertex* vertex = new TVertex('P' + QString::number(i));
         vertex->setPos(arr_coord[i].first, arr_coord[i].second);
         connect(vertex, &TVertex::move, this, &MainWindow::changeVertex);
         ui->widget->DrawItem(vertex);
@@ -61,7 +99,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_buttonAdd_clicked()
 {
-    TVertex* vertex = new TVertex(QString::number(_vertexes.size()));
+    //new name for points
+    TVertex* vertex = new TVertex('P' + QString::number(_vertexes.size()));
     vertex->setPos(300, 300);
     connect(vertex, &TVertex::move, this, &MainWindow::changeVertex);
     _vertexes.push_back(vertex);
@@ -79,5 +118,4 @@ void MainWindow::on_buttonRemove_clicked()
     _vertexes.pop_back();
     repaint();
 }
-
 
