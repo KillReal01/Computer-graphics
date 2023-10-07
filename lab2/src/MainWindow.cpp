@@ -1,10 +1,9 @@
 #include "MainWindow.h"
-#include "./ui_MainWindow.h"
+#include "ui_MainWindow.h"
 #include <QDebug>
 
 namespace
-{
-
+{ 
     double getPt(int n1, int n2, double perc)
     {
         double diff = n2 - n1;
@@ -37,11 +36,11 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    setWindowTitle("Кривая Безье");
     std::vector<std::pair<int, int>> arr_coord {
-        {200, 700},
+        {200, 500},
         {500, 200},
-        {700, 500},
+        {300, 300},
     };
 
     for (int i = 0; i < 3; i++) {
