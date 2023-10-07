@@ -23,7 +23,9 @@ void TVertex::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*
     painter->setFont(QFont("times", FONT_SIZE));
     int labelSizeX = FONT_SIZE * 4/3 * 3/5 * _Name.length();
     int labelSizeY = FONT_SIZE * 4/3;
-    painter->drawText(QPointF(0 - labelSizeX/2, 0 + labelSizeY/2), _Name);
+    //changed points coords and names
+    QString point_coords =  ": (" + QString::number(this->pos().x()) + ", " + QString::number(this->pos().y()) + ')';
+    painter->drawText(QPointF(0 - labelSizeX/2, 0 + labelSizeY/2 + 25), _Name + point_coords);
 }
 
 void TVertex::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
@@ -47,7 +49,6 @@ void TVertex::mouseReleaseEvent(QGraphicsSceneMouseEvent* /*event*/)
 const QString& TVertex::Name() const {
     return _Name;
 }
-
 
 
 
