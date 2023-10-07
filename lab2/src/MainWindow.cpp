@@ -1,40 +1,3 @@
-#include "MainWindow.h"
-#include "./ui_MainWindow.h"
-#include <QDebug>
-
-namespace
-{
-
-    double getPt(int n1, int n2, double perc)
-    {
-        double diff = n2 - n1;
-        return n1 + ( diff * perc );
-    }
-
-    std::vector<std::pair<int, int>> getBezierPoint(const std::vector<std::pair<int, int>>& arr, double perc) {
-        if (arr.size() <= 1) {
-            return arr;
-        }
-
-        std::vector<std::pair<int, int>> ans;
-        for (int i = 0; i < arr.size() - 1; i++) {
-            const auto& pointA = arr[i];
-            const auto& pointB = arr[i + 1];
-
-            double x = getPt(pointA.first, pointB.first, perc);
-            double y = getPt(pointA.second, pointB.second, perc);
-
-            ans.push_back({x, y});
-        }
-
-        return getBezierPoint(ans, perc);
-    }
-
-} // namespace
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -116,4 +79,5 @@ void MainWindow::on_buttonRemove_clicked()
     _vertexes.pop_back();
     repaint();
 }
+
 
