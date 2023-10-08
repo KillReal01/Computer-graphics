@@ -66,7 +66,7 @@ void MainWindow::repaint()
     }
 
     std::vector<std::pair<int, int>> ans;
-    for(float i = 0 ; i < 1 ; i += 0.01)
+    for(float i = 0 ; i < 1 ; i += 0.001)
     {
         auto point = getBezierPoint(main_points, i).back();
         double x = point.first;
@@ -76,7 +76,7 @@ void MainWindow::repaint()
     }
 
     for(int i = 0; i < ans.size() - 1; i++)
-        _lines.push_back(new Line(ans[i].first, ans[i].second, ans[i+1].first, ans[i+1].second));
+        _lines.push_back(new Line(ans[i].first, ans[i].second, ans[i+1].first, ans[i+1].second, true));
 
     for(int i = 0; i < main_points.size() - 1; i++)
         _lines.push_back(new Line(main_points[i].first, main_points[i].second, main_points[i+1].first, main_points[i+1].second));

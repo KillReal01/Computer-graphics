@@ -15,7 +15,8 @@ public:
     static const int VERTEX_RADIUS;
 
 public:
-    explicit Line(int x1, int y1, int x2, int y2) : _x1(x1), _y1(y1), _x2(x2), _y2(y2) {}
+    Line(int x1, int y1, int x2, int y2) : _x1(x1), _y1(y1), _x2(x2), _y2(y2), curve(false) {}
+    Line(int x1, int y1, int x2, int y2, bool type) : _x1(x1), _y1(y1), _x2(x2), _y2(y2), curve(type) {}
     ~Line() {}
 
 private:
@@ -25,7 +26,10 @@ private:
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/)
     {
-        painter->setBrush(QBrush(QColor(64, 169, 201)));
+        if (curve)
+            painter->setPen(QPen(Qt::red, 2, Qt::SolidLine));
+        else
+            painter->setPen(QPen(Qt::black, 2, Qt::DotLine));
         painter->drawLine(QPointF(_x1, _y1), QPointF(_x2, _y2));
     }
 
@@ -35,6 +39,7 @@ private:
     int _y1;
     int _x2;
     int _y2;
+    bool curve; /* line style*/
 };
 
 #endif // TLINE_H
