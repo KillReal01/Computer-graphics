@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "structure.h"
+#include "matrix.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -18,6 +20,12 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    int row, column;
+    Matrix<double> U, W, N, M;
+    Matrix<Point3d> B;
+
     void init();
+    Point3d getBezierPoint(double u, double w);
 };
+
 #endif // MAINWINDOW_H

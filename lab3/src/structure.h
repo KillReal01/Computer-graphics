@@ -55,6 +55,7 @@ struct Point3d
         t.z += p.z;
         return t;
     }
+
     Point3d operator- (const Point3d & p){
         Point3d t(*this);
         t.x -= p.x;

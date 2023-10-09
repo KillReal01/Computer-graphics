@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-//#include <QString>
+
 
 template<class T>
 class Matrix
@@ -30,20 +30,16 @@ public:
 
     const Matrix<T> operator*(const Matrix<T>& other);
 //    template <class U, class N>
-//    Matrix<N> operator*(const Matrix<U>& other);
+//    const Matrix<N> operator*(const Matrix<U>& other);
 
     const Matrix<T> operator+ (const Matrix<T>&);
     const Matrix<T> operator- (const Matrix<T>&);
     Matrix<T>& operator= (const Matrix<T>&);
     bool operator== (const Matrix<T>&) const;
-
     T* operator[](size_t i);
 
     template<class N>
     friend std::ostream& operator<<(std::ostream&, const Matrix<N>&);
-
-    //template<class N>
-    //friend QString& operator<<(QString& s, Matrix<N>& c);
 
 private:
     int col;
@@ -222,7 +218,7 @@ const Matrix<T> Matrix<T>::operator*(const Matrix<T>& other)
 
 //template <class T>
 //template <class U, class N>
-//Matrix<N> Matrix<T>::operator*(const Matrix<U>& other)
+//const Matrix<N> Matrix<T>::operator*(const Matrix<U>& other)
 //{
 //    int m = this->row;
 //    int n = other.col;
@@ -319,20 +315,6 @@ T *Matrix<T>::operator[](size_t i)
 {
     return mtx[i];
 }
-
-
-//template<class T>
-//QString& operator<<(QString& s, Matrix<T>& c)
-//{
-//    int n = c.row;
-//    int m = c.col;
-//    for (int i = 0; i < n; i++) {
-//        for (int j = 0; j < m; j++) {
-//            s << c.mtx[i][j];
-//        }
-//    }
-//    return s;
-//}
 
 
 #endif // MATRIX_H
