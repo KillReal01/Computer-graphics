@@ -80,7 +80,7 @@ void MainWindow::init()
 
     for (int i = 0; i < B.getRow(); ++i){
         for (int j = 0; j < B.getColumn(); ++j){
-            B[i][j] = Point3d(rand() % 10, rand() % 10, rand() % 10);
+            B[i][j] = Point3d(i, j, rand() % 10);
         }
     }
     std::cout << "B\n" << B << "\n";
