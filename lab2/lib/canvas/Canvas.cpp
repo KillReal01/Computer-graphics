@@ -9,7 +9,7 @@ const int SCREEN_HEIGHT = 600;
 Canvas::Canvas(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Canvas)
-    , _pen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap))
+    , _pen(QPen(Qt::green, 1, Qt::SolidLine, Qt::FlatCap))
     , _zoom(100)
 {
     ui->setupUi(this);

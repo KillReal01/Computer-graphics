@@ -21,14 +21,17 @@ public:
     ~Matrix();
 
     void transpose();
-    void setValue(int, int, T);
-    std::vector<T> getVector() const;
-    std::vector<std::vector<T>> getVectors() const;
+    std::vector<std::vector<T>> getMatrix() const;
     int getColumn() const;
     int getRow() const;
 
 
+//    template <class N, class R, class U>
+//    friend Matrix<R> operator*(const Matrix<N>& a, const Matrix<U>& b);
+
     const Matrix<T> operator*(const Matrix<T>& other);
+
+
 //    template <class U, class N>
 //    const Matrix<N> operator*(const Matrix<U>& other);
 
@@ -57,11 +60,11 @@ Matrix<T>::Matrix() : row(0), col(0), mtx(nullptr) { }
 template<class T>
 Matrix<T>::Matrix(int n, int m) : row(n), col(m) {
     this->mtx = this->allocate_memory(n, m);
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            this->mtx[i][j] = T{};
-        }
-    }
+//    for (int i = 0; i < n; i++) {
+//        for (int j = 0; j < m; j++) {
+//            this->mtx[i][j] = T{};
+//        }
+//    }
 }
 
 
@@ -149,29 +152,9 @@ void Matrix<T>::transpose() {
     std::swap(this->row, this->col);
 }
 
-template<class T>
-void Matrix<T>::setValue(int i, int j, T value) {
-    if (i >= 0 && i < this->row && j >= 0 && j < this->col)
-        this->mtx[i][j] = value;
-}
-
-// only for matrix 1 * n
-template<class T>
-std::vector<T> Matrix<T>::getVector() const
-{
-    if (this->row > 1)
-        return {};
-
-    std::vector<T> vec;
-    for (int i = 0; i < this->col; ++i) {
-        vec.push_back(this->mtx[0][i]);
-    }
-    return vec;
-}
-
 
 template<class T>
-std::vector<std::vector<T>> Matrix<T>::getVectors() const
+std::vector<std::vector<T>> Matrix<T>::getMatrix() const
 {
     std::vector<std::vector<T>> vec(this->row, std::vector<T>(this->col));
     for (int i = 0; i < this->row; ++i) {
@@ -196,6 +179,25 @@ int Matrix<T>::getRow() const
     return row;
 }
 
+
+
+
+//template <class N, class R, class U>
+//Matrix<R> operator*(const Matrix<N>& a, const Matrix<U>& b){
+//    int m = a.getRow();
+//    int n = a.getColumn();
+//    int k = b.getColumn();
+
+//    Matrix<R> tmp(m, n);
+//    for (int i = 0; i < m; i++) {
+//        for (int j = 0; j < n; j++) {
+//            for (int p = 0; p < k; p++) {
+//                tmp.mtx[i][j] = tmp.mtx[i][j] + a.mtx[i][p] * b.mtx[p][j];
+//            }
+//        }
+//    }
+//    return tmp;
+//}
 
 template <class T>
 const Matrix<T> Matrix<T>::operator*(const Matrix<T>& other)

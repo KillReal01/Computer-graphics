@@ -14,32 +14,39 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+include_directories(${CMAKE_SOURCE_DIR}/math ${CMAKE_SOURCE_DIR}/geometry ${CMAKE_SOURCE_DIR}/canvas)
+
 set(PROJECT_SOURCES
         main.cpp
         MainWindow.cpp
         MainWindow.h
         MainWindow.ui
 
-        matrix.h
-        structure.h
-        figure.h
-        figure.cpp
+        math/matrix.h
+        math/convert.h
+        math/bezier.h
 
-        ../lib/canvas/Canvas.cpp
-        ../lib/canvas/Canvas.h
-        ../lib/canvas/Canvas.ui
+        geometry/point.h
+        geometry/point.cpp
 
-        bezier.h
+        geometry/edge.h
 
-        vertex.h
-        vertex.cpp
+        geometry/figure.h
+        geometry/figure.cpp
 
-        Line.h
-        Line.cpp
+        canvas/vertex.h
+        canvas/vertex.cpp
+
+        canvas/Line.h
+        canvas/Line.cpp
+
+        canvas/Canvas.cpp
+        canvas/Canvas.h
+        canvas/Canvas.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(lab3
+    qt_add_executable(${PROJECT_NAME}
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
@@ -49,7 +56,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 else()
     if(ANDROID)
-        add_library(lab3 SHARED
+        add_library(${PROJECT_NAME} SHARED
             ${PROJECT_SOURCES}
         )
 # Define properties for Android with Qt 5 after find_package() calls as:
@@ -61,9 +68,9 @@ else()
     endif()
 endif()
 
-target_link_libraries(lab3 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
-set_target_properties(lab3 PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -72,5 +79,5 @@ set_target_properties(lab3 PROPERTIES
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(lab3)
+    qt_finalize_executable(${PROJECT_NAME})
 endif()
