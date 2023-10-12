@@ -26,14 +26,11 @@ public:
     int getRow() const;
 
 
-//    template <class N, class R, class U>
-//    friend Matrix<R> operator*(const Matrix<N>& a, const Matrix<U>& b);
+    template <class U>
+    friend const Matrix<U> operator*(const Matrix<U>& a, const Matrix<U>& b);
 
-    const Matrix<T> operator*(const Matrix<T>& other);
+    //const Matrix<T> operator*(const Matrix<T>& other);
 
-
-//    template <class U, class N>
-//    const Matrix<N> operator*(const Matrix<U>& other);
 
     const Matrix<T> operator+ (const Matrix<T>&);
     const Matrix<T> operator- (const Matrix<T>&);
@@ -180,43 +177,41 @@ int Matrix<T>::getRow() const
 }
 
 
+template <class U>
+const Matrix<U> operator*(const Matrix<U>& a, const Matrix<U>& b){
+    int m = a.getRow();
+    int n = a.getColumn();
+    int k = b.getColumn();
 
-
-//template <class N, class R, class U>
-//Matrix<R> operator*(const Matrix<N>& a, const Matrix<U>& b){
-//    int m = a.getRow();
-//    int n = a.getColumn();
-//    int k = b.getColumn();
-
-//    Matrix<R> tmp(m, n);
-//    for (int i = 0; i < m; i++) {
-//        for (int j = 0; j < n; j++) {
-//            for (int p = 0; p < k; p++) {
-//                tmp.mtx[i][j] = tmp.mtx[i][j] + a.mtx[i][p] * b.mtx[p][j];
-//            }
-//        }
-//    }
-//    return tmp;
-//}
-
-template <class T>
-const Matrix<T> Matrix<T>::operator*(const Matrix<T>& other)
-{
-    int m = this->row;
-    int n = other.col;
-    int k = this->col;
-    Matrix<T> tmp(m, n);
-
+    Matrix<U> tmp(m, n);
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-            tmp.mtx[i][j] = 0;
             for (int p = 0; p < k; p++) {
-                tmp.mtx[i][j] += this->mtx[i][p] * other.mtx[p][j];
+                tmp.mtx[i][j] = tmp.mtx[i][j] + a.mtx[i][p] * b.mtx[p][j];
             }
         }
     }
     return tmp;
 }
+
+//template <class T>
+//const Matrix<T> Matrix<T>::operator*(const Matrix<T>& other)
+//{
+//    int m = this->row;
+//    int n = other.col;
+//    int k = this->col;
+//    Matrix<T> tmp(m, n);
+
+//    for (int i = 0; i < m; i++) {
+//        for (int j = 0; j < n; j++) {
+//            tmp.mtx[i][j] = 0;
+//            for (int p = 0; p < k; p++) {
+//                tmp.mtx[i][j] += this->mtx[i][p] * other.mtx[p][j];
+//            }
+//        }
+//    }
+//    return tmp;
+//}
 
 //template <class T>
 //template <class U, class N>

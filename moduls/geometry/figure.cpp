@@ -6,9 +6,9 @@
 
 Figure::Figure() {}
 
-
 Figure::Figure(const std::vector<Edge<Point>>& data) : data(data) {}
 
+Figure::Figure(const std::vector<Edge<Point> > &data, const Point &c): data(data), center(c) {}
 
 std::vector<Edge<Point>> Figure::getPerspective(int axe) const
 {
@@ -38,23 +38,36 @@ void Figure::convertFigure(const Matrix<double>& mtx)
     }
 }
 
+void Figure::setCenter(const Point &c){
+    center = c;
+}
+
 
 void Figure::rotationOX(int angle)
 {
     Matrix<double> rotate = rotationMatrixOX(angle);
-    convertFigure(rotate);
+    Matrix<double> moveToCenter = moveMatrix(-center[0], -center[1], -center[2]);
+    Matrix<double> moveFromCenter = moveMatrix(center[0], center[1], center[2]);
+    auto T = moveToCenter * rotate * moveFromCenter;
+    convertFigure(T);
 }
 
 void Figure::rotationOY(int angle)
 {
     Matrix<double> rotate = rotationMatrixOY(angle);
-    convertFigure(rotate);
+    Matrix<double> moveToCenter = moveMatrix(-center[0], -center[1], -center[2]);
+    Matrix<double> moveFromCenter = moveMatrix(center[0], center[1], center[2]);
+    auto T = moveToCenter * rotate * moveFromCenter;
+    convertFigure(T);
 }
 
 void Figure::rotationOZ(int angle)
 {
     Matrix<double> rotate = rotationMatrixOZ(angle);
-    convertFigure(rotate);
+    Matrix<double> moveToCenter = moveMatrix(-center[0], -center[1], -center[2]);
+    Matrix<double> moveFromCenter = moveMatrix(center[0], center[1], center[2]);
+    auto T = moveToCenter * rotate * moveFromCenter;
+    convertFigure(T);
 }
 
 

@@ -75,6 +75,10 @@ const Point Point::operator-(const Point &p){
     return result;
 }
 
+double Point::operator[](int index){
+    return data.at(index);
+}
+
 std::ostream &operator<<(std::ostream &os, const Point &p){
     os << "(" << p.data[0] << ";" << p.data[1] << ";" << p.data[2] << ")";
     return os;

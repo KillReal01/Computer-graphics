@@ -73,6 +73,58 @@ namespace{
         return mtx;
     }
 
+    /* brief Матрица перемещения
+     *
+     * param l, m, n - параметры перемещения
+     *
+     * return Матрица преобразования
+     */
+    Matrix<double> moveMatrix(double l, double m, double n) {
+        std::vector<std::vector<double>> vec{
+            {1, 0, 0, 0},
+            {0, 1, 0, 0},
+            {0, 0, 1, 0},
+            {l, m, n, 1}
+        };
+        Matrix<double> mtx(vec);
+        return mtx;
+    }
+
+
+    /* brief Матрица проекции
+     *
+     * param o, p, r - параметры проекции
+     *
+     * return Матрица преобразования
+     */
+    Matrix<double> projectionMatrix(double o, double p, double r) {
+        std::vector<std::vector<double>> vec{
+            {1, 0, 0, o},
+            {0, 1, 0, p},
+            {0, 0, 1, r},
+            {0, 0, 0, 1}
+        };
+        Matrix<double> mtx(vec);
+        return mtx;
+    }
+
+
+    /* brief Матрица масштабирования
+     *
+     * param s - параметры масштабирования
+     *
+     * return Матрица преобразования
+     */
+    Matrix<double> scaleMatrix(double s) {
+        std::vector<std::vector<double>> vec{
+            {1, 0, 0, 0},
+            {0, 1, 0, 0},
+            {0, 0, 1, 0},
+            {0, 0, 0, s}
+        };
+        Matrix<double> mtx(vec);
+        return mtx;
+    }
 
     /* brief Преобразование точки в 2d
      *

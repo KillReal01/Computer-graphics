@@ -41,6 +41,9 @@ public:
     /*brief Оператор - */
     const Point operator- (const Point & p);
 
+    /*brief Оператор - []*/
+    double operator[](int index);
+
     /*brief Оператор << */
     friend std::ostream& operator<<(std::ostream& os, const Point& p);
 

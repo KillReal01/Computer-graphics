@@ -38,7 +38,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     Figure figure(edges);
     figure.convertFigure(rotationMatrixOX(20));
-    figure.getPerspective(1);
 }
 
 MainWindow::~MainWindow()
