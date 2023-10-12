@@ -6,7 +6,7 @@
 
 Figure::Figure() {}
 
-Figure::Figure(const std::vector<Edge<Point>>& data) : data(data) {}
+Figure::Figure(const std::vector<Edge<Point>>& data) : data(data), center(Point()) {}
 
 Figure::Figure(const std::vector<Edge<Point> > &data, const Point &c): data(data), center(c) {}
 
