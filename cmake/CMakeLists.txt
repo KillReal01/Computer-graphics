@@ -14,7 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
-include_directories(${CMAKE_SOURCE_DIR}/math ${CMAKE_SOURCE_DIR}/geometry ${CMAKE_SOURCE_DIR}/canvas)
+include_directories(${CMAKE_SOURCE_DIR}/../moduls/math ${CMAKE_SOURCE_DIR}/../moduls/geometry ${CMAKE_SOURCE_DIR}/../moduls/canvas)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -22,27 +22,27 @@ set(PROJECT_SOURCES
         MainWindow.h
         MainWindow.ui
 
-        math/matrix.h
-        math/convert.h
-        math/bezier.h
+        ../moduls/math/matrix.h
+        ../moduls/math/convert.h
+        ../moduls/math/bezier.h
 
-        geometry/point.h
-        geometry/point.cpp
+        ../moduls/geometry/point.h
+        ../moduls/geometry/point.cpp
 
-        geometry/edge.h
+        ../moduls/geometry/edge.h
 
-        geometry/figure.h
-        geometry/figure.cpp
+        ../moduls/geometry/figure.h
+        ../moduls/geometry/figure.cpp
 
-        canvas/vertex.h
-        canvas/vertex.cpp
+        ../moduls/canvas/vertex.h
+        ../moduls/canvas/vertex.cpp
 
-        canvas/Line.h
-        canvas/Line.cpp
+        ../moduls/canvas/Line.h
+        ../moduls/canvas/Line.cpp
 
-        canvas/Canvas.cpp
-        canvas/Canvas.h
-        canvas/Canvas.ui
+        ../moduls/canvas/Canvas.cpp
+        ../moduls/canvas/Canvas.h
+        ../moduls/canvas/Canvas.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
