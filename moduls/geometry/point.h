@@ -35,6 +35,9 @@ public:
     /*brief Оператор * справа */
     const Point operator*(double n) const;
 
+    /*brief TODO */
+    void scale();
+
     /*brief Оператор + */
     const Point operator+ (const Point & p);
 

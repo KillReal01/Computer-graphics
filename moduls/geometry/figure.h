@@ -5,9 +5,10 @@
 #include "matrix.h"
 #include "point.h"
 #include <vector>
+#include <QPainter>
+#include <QGraphicsItem>
 
-
-class Figure
+class Figure: public QGraphicsItem
 {
 public:
     /*brief Конструктор*/
@@ -37,12 +38,24 @@ public:
     /*brief Поворот вокруг оси OZ*/
     void rotationOZ(int);
 
+    /*brief TODO*/
+    const std::vector<Edge<Point>>& getData() const { return data;}
+
+private:
+    /*brief Получение рабочей области QGraphicsItem*/
+    QRectF boundingRect() const;
+
+    /*brief Отрисовка QGraphicsItem*/
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
 private:
     /*brief Вектор ребер(из точек)*/
     std::vector<Edge<Point>> data;
 
     /*brief Центр фигуры*/
     Point center;
+
+    QRectF rect_;
 };
 
 #endif // FIGURE_H

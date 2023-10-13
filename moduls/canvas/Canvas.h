@@ -25,6 +25,7 @@ public:
     void setPen(const QPen& pen) { _pen = pen; }
     void Rotation(int angle);
     void DrawItem(QGraphicsItem* item);
+    void Repaint();
 
 protected:
     void paintEvent(QPaintEvent *event);

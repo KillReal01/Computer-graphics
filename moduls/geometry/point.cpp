@@ -43,6 +43,13 @@ std::vector<double> Point::getData() const {
     return data;
 }
 
+void Point::scale()
+{
+    for (auto& coord : data) {
+        coord /= data[3];
+    }
+}
+
 const Point operator*(double n, const Point &point) {
     Point result(point);
     result.data[0] *= n;

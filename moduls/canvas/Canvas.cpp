@@ -30,8 +30,13 @@ Canvas::~Canvas()
 
 void Canvas::DrawFigure(const Figure& figure)
 {
-    _cur_figure = figure;
-    repaint();
+    //_cur_figure = figure;
+    //repaint();
+}
+
+void Canvas::Repaint()
+{
+    _scene->update();
 }
 
 void Canvas::paintEvent(QPaintEvent *event)
