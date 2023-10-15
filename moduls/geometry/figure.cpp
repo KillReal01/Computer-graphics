@@ -34,8 +34,12 @@ void Figure::convertFigure(const Matrix<double>& mtx)
         Point s(start2.getMatrix()[0]);
         Point e(end2.getMatrix()[0]);
 
-        //s.scale();
-        //e.scale();
+        s.scale();
+        e.scale();
+
+        //qDebug() << "#1" << s.getData();
+        //qDebug() << "#1" << e.getData();
+        //qDebug() << "#1 --";
 
         edge = Edge<Point>(s, e);
     }
@@ -52,7 +56,7 @@ void Figure::rotationOX(int angle)
     Matrix<double> moveToCenter = moveMatrix(-center[0], -center[1], -center[2]);
     Matrix<double> moveFromCenter = moveMatrix(center[0], center[1], center[2]);
     auto T = moveToCenter * rotate * moveFromCenter;
-    convertFigure(rotate);
+    convertFigure(T);
 }
 
 void Figure::rotationOY(int angle)
@@ -61,7 +65,7 @@ void Figure::rotationOY(int angle)
     Matrix<double> moveToCenter = moveMatrix(-center[0], -center[1], -center[2]);
     Matrix<double> moveFromCenter = moveMatrix(center[0], center[1], center[2]);
     auto T = moveToCenter * rotate * moveFromCenter;
-    convertFigure(rotate);
+    convertFigure(T);
 }
 
 void Figure::rotationOZ(int angle)
@@ -70,7 +74,7 @@ void Figure::rotationOZ(int angle)
     Matrix<double> moveToCenter = moveMatrix(-center[0], -center[1], -center[2]);
     Matrix<double> moveFromCenter = moveMatrix(center[0], center[1], center[2]);
     auto T = moveToCenter * rotate * moveFromCenter;
-    convertFigure(rotate);
+    convertFigure(T);
 }
 
 QRectF Figure::boundingRect() const {
@@ -99,7 +103,7 @@ QRectF Figure::boundingRect() const {
 void Figure::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/)
 {
     painter->setBrush(QBrush(QColor(64, 169, 201)));
-    // const auto perspective = getPerspective(2);
+    //const auto perspective = getPerspective(2);
     for (const auto& edge : data) {
         const auto& point_s = edge.getStart().getData();
         const auto& point_f = edge.getEnd().getData();

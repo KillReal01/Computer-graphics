@@ -3,45 +3,51 @@
 #include <QDebug>
 #include "matrix.h"
 #include "convert.h"
+#include "array.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Лабораторная работа №1");
 
-    std::vector<Edge<Point>> edges {
+    const std::vector<Edge<Point>> edges_figure {
+        Edge<Point>({250, 250, 150}, {250, 150, 150}),
+        Edge<Point>({150, 250, 150}, {250, 250, 150}),
+        Edge<Point>({250, 250, 150}, {250, 250, 250}),
 
-        Edge<Point>({300, 300, 200}, {300, 200, 200}),
-        /*Edge<Point>({200, 300, 200}, {300, 300, 200}),
-        Edge<Point>({300, 300, 200}, {300, 300, 300}),
+        Edge<Point>({150, 150, 150}, {250, 150, 150}),
+        Edge<Point>({150, 150, 150}, {150, 250, 150}),
+        Edge<Point>({150, 150, 150}, {150, 150, 250}),
 
-        Edge<Point>({200, 200, 200}, {300, 200, 200}),
-        Edge<Point>({200, 200, 200}, {200, 300, 200}),
-        Edge<Point>({200, 200, 200}, {200, 200, 300}),
+        Edge<Point>({150, 250, 250}, {150, 250, 150}),
+        Edge<Point>({150, 250, 250}, {150, 150, 250}),
+        Edge<Point>({150, 250, 250}, {250, 250, 250}),
 
-        Edge<Point>({200, 300, 300}, {200, 300, 200}),
-        Edge<Point>({200, 300, 300}, {200, 200, 300}),
-        Edge<Point>({200, 300, 300}, {300, 300, 300}),
-
-        Edge<Point>({300, 200, 300}, {200, 200, 300}),
-        Edge<Point>({300, 200, 300}, {300, 300, 300}),
-        Edge<Point>({300, 200, 300}, {300, 200, 200}),*/
-
+        Edge<Point>({250, 150, 250}, {150, 150, 250}),
+        Edge<Point>({250, 150, 250}, {250, 250, 250}),
+        Edge<Point>({250, 150, 250}, {250, 150, 150}),
     };
 
-    figure_ = new Figure(edges, Point(250, 250, 250));
-    ui->canvas->DrawItem(figure_);
-    //ui->canvas->DrawFigure(figure_);
-    //ui->horizontalScrollBar->setRange(0, 360);
-    _prev_angle = 0;
-    ui->horizontalScrollBar->setRange(0, 360);
-    ui->horizontalScrollBar->setValue(_prev_angle);
+    figure_ = new Figure(edges_figure, Point(200, 200, 200));
+    line_x = new Figure(std::vector<Edge<Point>>{Edge<Point>({300, 300, 300}, {600, 300, 300})}, Point(300, 300, 300));
+    line_y = new Figure(std::vector<Edge<Point>>{Edge<Point>({300, 300, 300}, {300, 600, 300})}, Point(300, 300, 300));
+    line_z = new Figure(std::vector<Edge<Point>>{Edge<Point>({300, 300, 300}, {300, 300, 600})}, Point(300, 300, 300));
 
-    auto point = Point{300, 0, 300};
-    auto mtr = Matrix<double>(point.getData());
-    auto ans = mtr * rotationMatrixOZ(4);
-    qDebug() << ans.getMatrix()[0];
+    for (auto& obj : {line_x, line_y, line_z, figure_}) {
+        obj->rotationOY(30);
+        obj->rotationOX(-30);
+        obj->rotationOZ(180);
+
+        ui->canvas->DrawItem(obj);
+    }
+
+    prev_angle_x_ = prev_angle_y_ = prev_angle_z_ = 0;
+    for (auto scroll_bar : {ui->scrollBarOX, ui->scrollBarOY, ui->scrollBarOZ}) {
+        scroll_bar->setRange(0, 360);
+        scroll_bar->setValue(0);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -49,17 +55,28 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-void MainWindow::on_horizontalScrollBar_valueChanged(int value)
+void MainWindow::on_scrollBarOX_valueChanged(int value)
 {
-    int diff_angle = value - _prev_angle;
-    _prev_angle = value;
-    figure_->rotationOY(1);
+    int diff_angle = value - prev_angle_x_;
+    prev_angle_x_ = value;
+    figure_->rotationOX(diff_angle);
     ui->canvas->Repaint();
-    //qDebug() << diff_angle;
-    for (const auto& edge : figure_->getData()) {
-        std::cout << edge.getStart() << " | " << edge.getEnd() << std::endl;
-    }
-
 }
+
+void MainWindow::on_scrollBarOY_valueChanged(int value)
+{
+    int diff_angle = value - prev_angle_y_;
+    prev_angle_y_ = value;
+    figure_->rotationOY(diff_angle);
+    ui->canvas->Repaint();
+}
+
+void MainWindow::on_scrollBarOZ_valueChanged(int value)
+{
+    int diff_angle = value - prev_angle_z_;
+    prev_angle_z_ = value;
+    figure_->rotationOZ(diff_angle);
+    ui->canvas->Repaint();
+}
+
 

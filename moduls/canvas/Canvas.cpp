@@ -3,8 +3,8 @@
 #include <QDebug>
 #include "vertex.h"
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_WIDTH = 700;
+const int SCREEN_HEIGHT = 500;
 
 Canvas::Canvas(QWidget *parent)
     : QWidget(parent)

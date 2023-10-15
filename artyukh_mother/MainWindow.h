@@ -18,12 +18,21 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_horizontalScrollBar_valueChanged(int value);
+    void on_scrollBarOZ_valueChanged(int value);
+    void on_scrollBarOX_valueChanged(int value);
+    void on_scrollBarOY_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;
 
     Figure* figure_;
-    int _prev_angle;
+    Point point;
+    int prev_angle_x_;
+    int prev_angle_y_;
+    int prev_angle_z_;
+
+    Figure* line_x;
+    Figure* line_y;
+    Figure* line_z;
 };
 #endif // MAINWINDOW_H

@@ -23,6 +23,9 @@ set(PROJECT_SOURCES
         MainWindow.h
         MainWindow.ui
 
+        ../moduls/geometry/array.h
+        ../moduls/geometry/array.cpp
+
         ../moduls/math/matrix.h
         ../moduls/math/convert.h
         ../moduls/math/bezier.h

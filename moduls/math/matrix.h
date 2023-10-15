@@ -57,11 +57,11 @@ Matrix<T>::Matrix() : row(0), col(0), mtx(nullptr) { }
 template<class T>
 Matrix<T>::Matrix(int n, int m) : row(n), col(m) {
     this->mtx = this->allocate_memory(n, m);
-//    for (int i = 0; i < n; i++) {
-//        for (int j = 0; j < m; j++) {
-//            this->mtx[i][j] = T{};
-//        }
-//    }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            this->mtx[i][j] = T{};
+        }
+    }
 }
 
 
