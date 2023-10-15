@@ -6,9 +6,36 @@
 
 Figure::Figure() {}
 
-Figure::Figure(const std::vector<Edge<Point>>& data) : data(data), center(Point()) {}
+Figure::Figure(const std::vector<Edge<Point>>& data) :
+    data(data),
+    center(Point()),
+    pen(QPen(Qt::black, 1, Qt::SolidLine)),
+    name("figure")
+{}
 
-Figure::Figure(const std::vector<Edge<Point> > &data, const Point &c): data(data), center(c) {}
+Figure::Figure(const std::vector<Edge<Point> > &data, const Point &c):
+    data(data),
+    center(c),
+    pen(QPen(Qt::black, 1, Qt::SolidLine)),
+    name("figure")
+{}
+
+
+Figure::Figure(const std::vector<Edge<Point> > &data, const Point &c, const QPen& p):
+    data(data),
+    center(c),
+    pen(p),
+    name("figure")
+{}
+
+
+Figure::Figure(const std::vector<Edge<Point> > &data, const Point &c, const QString& name, const QPen& p):
+    data(data),
+    center(c),
+    name(name),
+    pen(p)
+{};
+
 
 std::vector<Edge<Point>> Figure::getPerspective(int axe) const
 {
@@ -77,6 +104,14 @@ void Figure::rotationOZ(int angle)
     convertFigure(T);
 }
 
+void Figure::setName(const QString &name){
+    this->name = name;
+}
+
+const QString Figure::getName(){
+    return name;
+}
+
 QRectF Figure::boundingRect() const {
     if (data.empty())
         return {};
@@ -102,8 +137,7 @@ QRectF Figure::boundingRect() const {
 
 void Figure::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/)
 {
-    painter->setBrush(QBrush(QColor(64, 169, 201)));
-    //const auto perspective = getPerspective(2);
+    painter->setPen(pen);
     for (const auto& edge : data) {
         const auto& point_s = edge.getStart().getData();
         const auto& point_f = edge.getEnd().getData();

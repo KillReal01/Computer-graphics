@@ -20,6 +20,7 @@ public:
     explicit Canvas(QWidget *parent = nullptr);
     ~Canvas();
     void DrawFigure(const Figure& figure);
+    void AddText(const QString& str, const QFont& font, int x, int y);
     void DrawLines(const std::vector<std::pair<int, int>>& arr);
     void DrawLines(const std::vector<Line*>& arr);
     void setPen(const QPen& pen) { _pen = pen; }

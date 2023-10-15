@@ -20,6 +20,12 @@ public:
     /*brief Конструктор*/
     Figure(const std::vector<Edge<Point>>& data, const Point& c);
 
+    /*brief Конструктор*/
+    Figure(const std::vector<Edge<Point> > &data, const Point &c, const QPen &p);
+
+    /*brief Конструктор*/
+    Figure(const std::vector<Edge<Point> > &data, const Point &c, const QString& name, const QPen& p);
+
     /*brief Получение перспективы относительно оси: 0 - OX; 1 - OY; 2 - OZ */
     std::vector<Edge<Point>> getPerspective(int axe) const;
 
@@ -41,6 +47,12 @@ public:
     /*brief TODO*/
     const std::vector<Edge<Point>>& getData() const { return data;}
 
+    /*brief Установка имени фигуры*/
+    void setName(const QString& name);
+
+    /*brief Получение имени фигуры*/
+    const QString getName();
+
 private:
     /*brief Получение рабочей области QGraphicsItem*/
     QRectF boundingRect() const;
@@ -56,6 +68,12 @@ private:
     Point center;
 
     QRectF rect_;
+
+    /*brief Раскраска фигуры*/
+    QPen pen;
+
+    /*brief Имя фигуры*/
+    QString name;
 };
 
 #endif // FIGURE_H

@@ -12,35 +12,52 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setWindowTitle("Лабораторная работа №1");
 
+    double side = 200;
+    double delta = 200;
     const std::vector<Edge<Point>> edges_figure {
-        Edge<Point>({250, 250, 150}, {250, 150, 150}),
-        Edge<Point>({150, 250, 150}, {250, 250, 150}),
-        Edge<Point>({250, 250, 150}, {250, 250, 250}),
+        Edge<Point>({delta + side, delta + side, delta}, {delta + side, delta, delta}),
+        Edge<Point>({delta, delta + side, delta}, {delta + side, delta + side, delta}),
+        Edge<Point>({delta + side, delta + side, delta}, {delta + side, delta + side, delta + side}),
 
-        Edge<Point>({150, 150, 150}, {250, 150, 150}),
-        Edge<Point>({150, 150, 150}, {150, 250, 150}),
-        Edge<Point>({150, 150, 150}, {150, 150, 250}),
+        Edge<Point>({delta, delta, delta}, {delta + side, delta, delta}),
+        Edge<Point>({delta, delta, delta}, {delta, delta + side, delta}),
+        Edge<Point>({delta, delta, delta}, {delta, delta, delta + side}),
 
-        Edge<Point>({150, 250, 250}, {150, 250, 150}),
-        Edge<Point>({150, 250, 250}, {150, 150, 250}),
-        Edge<Point>({150, 250, 250}, {250, 250, 250}),
+        Edge<Point>({delta, delta + side, delta + side}, {delta, delta + side, delta}),
+        Edge<Point>({delta, delta + side, delta + side}, {delta, delta, delta + side}),
+        Edge<Point>({delta, delta + side, delta + side}, {delta + side, delta + side, delta + side}),
 
-        Edge<Point>({250, 150, 250}, {150, 150, 250}),
-        Edge<Point>({250, 150, 250}, {250, 250, 250}),
-        Edge<Point>({250, 150, 250}, {250, 150, 150}),
+        Edge<Point>({delta + side, delta, delta + side}, {delta, delta, delta + side}),
+        Edge<Point>({delta + side, delta, delta + side}, {delta + side, delta + side, delta + side}),
+        Edge<Point>({delta + side, delta, delta + side}, {delta + side, delta, delta}),
     };
 
-    figure_ = new Figure(edges_figure, Point(200, 200, 200));
-    line_x = new Figure(std::vector<Edge<Point>>{Edge<Point>({300, 300, 300}, {600, 300, 300})}, Point(300, 300, 300));
-    line_y = new Figure(std::vector<Edge<Point>>{Edge<Point>({300, 300, 300}, {300, 600, 300})}, Point(300, 300, 300));
-    line_z = new Figure(std::vector<Edge<Point>>{Edge<Point>({300, 300, 300}, {300, 300, 600})}, Point(300, 300, 300));
+    figure_ = new Figure(edges_figure, Point(delta + side / 2, delta + side / 2, delta + side / 2), "Cube", QPen(Qt::blue, 2, Qt::SolidLine));
 
-    for (auto& obj : {line_x, line_y, line_z, figure_}) {
+    double length = 300;
+    delta = 50;
+
+    line_x = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length * 2, length, delta + length})},
+                        Point(delta + length, length, delta + length), "X", QPen(Qt::black, 2, Qt::SolidLine));
+    line_y = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length, length * 2, delta + length})},
+                        Point(delta + length, length, delta + length), "Y", QPen(Qt::black, 2, Qt::SolidLine));
+    line_z = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length, length, delta + length * 2})},
+                        Point(delta + length, length, delta + length), "Z", QPen(Qt::black, 2, Qt::SolidLine));
+
+    figure_->rotationOY(30);
+    figure_->rotationOX(-30);
+    figure_->rotationOZ(180);
+    ui->canvas->DrawItem(figure_);
+
+    for (auto& obj : {line_x, line_y, line_z}) {
         obj->rotationOY(30);
         obj->rotationOX(-30);
         obj->rotationOZ(180);
 
         ui->canvas->DrawItem(obj);
+        double x = obj->getData()[0].getEnd().getData()[0];
+        double y = obj->getData()[0].getEnd().getData()[1];
+        ui->canvas->AddText(obj->getName(), QFont("Times", 15), x, y);
     }
 
     prev_angle_x_ = prev_angle_y_ = prev_angle_z_ = 0;

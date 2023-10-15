@@ -34,5 +34,6 @@ private:
     Figure* line_x;
     Figure* line_y;
     Figure* line_z;
+    Figure* axes;
 };
 #endif // MAINWINDOW_H

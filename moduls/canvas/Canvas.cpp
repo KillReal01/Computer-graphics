@@ -34,6 +34,12 @@ void Canvas::DrawFigure(const Figure& figure)
     //repaint();
 }
 
+void Canvas::AddText(const QString &str, const QFont& font, int x, int y)
+{
+    QGraphicsTextItem *text = _scene->addText(str, font);
+    text->setPos(x, y);
+}
+
 void Canvas::Repaint()
 {
     _scene->update();
