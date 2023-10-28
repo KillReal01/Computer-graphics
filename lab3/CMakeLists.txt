@@ -15,12 +15,16 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 include_directories(${CMAKE_SOURCE_DIR}/../moduls/math ${CMAKE_SOURCE_DIR}/../moduls/geometry ${CMAKE_SOURCE_DIR}/../moduls/canvas)
+include_directories(${CMAKE_SOURCE_DIR}/../moduls)
 
 set(PROJECT_SOURCES
         main.cpp
         MainWindow.cpp
         MainWindow.h
         MainWindow.ui
+
+        ../moduls/geometry/array.h
+        ../moduls/geometry/array.cpp
 
         ../moduls/math/matrix.h
         ../moduls/math/convert.h

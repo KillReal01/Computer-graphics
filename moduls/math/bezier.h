@@ -1,7 +1,8 @@
-#ifndef BEZIER_H
+﻿#ifndef BEZIER_H
 #define BEZIER_H
 
 #include "matrix.h"
+#include "point.h"
 #include <vector>
 #include <QtMath>
 
@@ -28,41 +29,63 @@ namespace{
         return result;
     }
 
-
-    /* brief Создание базиса Безье [u**n, u**(n-1)..., u, 1]
+    /* brief Функция Бернштайна
      *
      * param u - основание базиса
+     * param i - размерность подмножетсва
      * param n - размерность базиса
      *
-     * return базис Безье
+     * return Функция Бернштайна
      */
-    Matrix<double> bezierBasis(double u, int n){
-        std::vector<double> vec(n + 1);
-        for (int i = 0; i < vec.size(); ++i){
-            vec[i] = qPow(u, n - i);
-        }
-        Matrix<double> mtx(vec);
-        return mtx;
+    double Bernshtain(int n, int i, double u) {
+        unsigned long long result = C(n, i);
+        double tmp = qPow(u, i) * qPow((1 - u), (n - i));
+        return result * tmp;
     }
 
-    /* brief Создание матрицы бинома
+    /* brief Точка Безье
      *
-     * param n - размерность матрицы
+     * param u - основание базиса
+     * param u - основание базиса
+     * param mtx - Матрица опорных точек
      *
-     * return матрица бинома
+     * return Точка Безье
      */
-    Matrix<double> binomialMatrix(int n){
-        Matrix<double> mtx(n + 1, n + 1);
-        for (int i = 0; i < mtx.getRow(); ++i){
-            for (int j = 0; j < mtx.getColumn(); ++j){
-                int tmp = n - j - i;
-                if (tmp < 0)
-                    mtx[i][j] = 0;
-                else
-                    mtx[i][j] = C(n, j) * C(n - j, tmp) * qPow(-1, n - i - j);
+    Point bezierPoint(double u, double w, Matrix<Point>& mtx){
+        int n = mtx.getRow() - 1;
+        int m = mtx.getColumn() - 1;
+        Point res{};
+        for (int i = 0; i < n + 1; ++i){
+            for (int j = 0; j < m + 1; ++j){
+                Point tmp = mtx[i][j];
+                res = res + Bernshtain(n, i, u) * Bernshtain(m, j, w) * tmp;
             }
         }
-        return mtx;
+        return res;
     }
+
+
+    /* brief Поверхность Безье
+     *
+     * param step - шаг прохода
+     * param mtx - Матрица опорных точек
+     *
+     * return Поверхность Безье
+     */
+    Matrix<Point> createBezierSurface(double num, Matrix<Point>& mtx){
+        int size_u = num;
+        int size_w = num;
+        Matrix<Point> P(size_u, size_w);
+        for (int i = 0; i < size_u; ++i){
+            for (int j = 0; j <size_w; ++j){
+                double u = i * 1.0 / (size_u - 1);
+                double w = j * 1.0 / (size_w - 1);
+                Point tmp = bezierPoint(u, w, mtx);
+                P[i][j] = tmp;
+            }
+        }
+        return P;
+    }
+
 }
 #endif // BEZIER_H

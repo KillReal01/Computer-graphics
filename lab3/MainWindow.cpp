@@ -1,86 +1,177 @@
-#include "MainWindow.h"
+﻿#include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include <QDebug>
+#include <iostream>
 #include "matrix.h"
+#include "convert.h"
+#include "array.h"
 #include "bezier.h"
 #include "figure.h"
-#include "convert.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    //ui->setupUi(this);
-    setWindowTitle("Поверхность Безье");
-    //init();
-    //getBezierPoint(0.5, 0.5);
+    ui->setupUi(this);
+    this->setWindowTitle("Лабораторная работа №3");
 
-    std::vector<Edge<Point>> edges {
+    row = 10;
+    column = 10;
 
-        Edge<Point>({1, 1, -1}, {1, -1, -1}),
-        Edge<Point>({-1, 1, -1}, {1, 1, -1}),
-        Edge<Point>({1, 1, -1}, {1, 1, 1}),
+    createBasePoints();
+    createBaseFigure();
 
-        Edge<Point>({-1, -1, -1}, {1, -1, -1}),
-        Edge<Point>({-1, -1, -1}, {-1, 1, -1}),
-        Edge<Point>({-1, -1, -1}, {-1, -1, 1}),
+    // точность для фигуры большой не ставить, факториалы умирают
+    createBezierFigure(50);
 
-        Edge<Point>({-1, 1, 1}, {-1, 1, -1}),
-        Edge<Point>({-1, 1, 1}, {-1, -1, 1}),
-        Edge<Point>({-1, 1, 1}, {1, 1, 1}),
+    double length = 300;
+    double scale = 50;
+    double delta = 200;
 
-        Edge<Point>({1, -1, 1}, {-1, -1, 1}),
-        Edge<Point>({1, -1, 1}, {1, 1, 1}),
-        Edge<Point>({1, -1, 1}, {1, -1, -1}),
+//    line_x = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length * 2, length, delta + length})},
+//                        Point(delta + length, length, delta + length), "X", QPen(Qt::black, 2, Qt::SolidLine));
+//    line_y = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length, length * 2, delta + length})},
+//                        Point(delta + length, length, delta + length), "Y", QPen(Qt::black, 2, Qt::SolidLine));
+//    line_z = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length, length, delta + length * 2})},
+//                        Point(delta + length, length, delta + length), "Z", QPen(Qt::black, 2, Qt::SolidLine));
 
-    };
+    figure_base->rotationOY(30);
+    figure_base->rotationOX(-30);
+    figure_base->rotationOZ(180);
+    ui->canvas->DrawItem(figure_base);
 
-    Figure figure(edges);
-    figure.convertFigure(rotationMatrixOX(20));
+    figure_bezier->rotationOY(30);
+    figure_bezier->rotationOX(-30);
+    figure_bezier->rotationOZ(180);
+    ui->canvas->DrawItem(figure_bezier);
+
+//    for (auto& obj : {line_x, line_y, line_z}) {
+//        obj->rotationOY(30);
+//        obj->rotationOX(-30);
+//        obj->rotationOZ(180);
+
+//        ui->canvas->DrawItem(obj);
+//        double x = obj->getData()[0].getEnd().getData()[0];
+//        double y = obj->getData()[0].getEnd().getData()[1];
+//        ui->canvas->AddText(obj->getName(), QFont("Times", 15), x, y);
+//    }
+
+    prev_angle_x_ = prev_angle_y_ = prev_angle_z_ = 0;
+    for (auto scroll_bar : {ui->scrollBarOX, ui->scrollBarOY, ui->scrollBarOZ}) {
+        scroll_bar->setRange(0, 360);
+        scroll_bar->setValue(0);
+    }
 }
 
 MainWindow::~MainWindow()
 {
-    //delete ui;
+    delete ui;
 }
 
-void MainWindow::init()
-{
-    row = 5;
-    column = 3;
 
-    N = binomialMatrix(row - 1);
-    M = binomialMatrix(column - 1);
-    M.transpose();
-
-    std::cout << "N\n" << N << "\n";
-    std::cout << "M\n" << M << "\n";
-
+void MainWindow::createBasePoints(){
     B = Matrix<Point>(row, column);
-
     for (int i = 0; i < B.getRow(); ++i){
         for (int j = 0; j < B.getColumn(); ++j){
-            B[i][j] = Point(i, j, rand() % 10);
+            //B[i][j] = Point(i, j, (rand() % 200) / 100.0);
+            B[i][j] = Point(i, j, rand() % 5);
+            //B[i][j] = Point(i, j, i + j);
         }
     }
-    std::cout << "B\n" << B << "\n";
+    //std::cout << "B\n" << B << "\n";
 }
 
-
-Point MainWindow::getBezierPoint(double u, double w)
+void MainWindow::createBaseFigure()
 {
-    U = bezierBasis(u, column - 1);
-    W = bezierBasis(w, row - 1);
-    W.transpose();
+    std::vector<Edge<Point>> edges_base;
 
-    Point bezierPoint{};
-    // = U * N * B * M * W;// надо пофиксить
-//    U * N * B;
-//    auto A = B * M * W;
-//    std::cout << "Mul\n" << A << "\n";
-    return bezierPoint;
+    double scalefig = 50;
+    // base points
+    // horizontal lines
+    for (int i = 0; i < B.getRow(); ++i){
+        for (int j = 0; j < B.getColumn() - 1; ++j){
+            Point prev = scalefig * B[i][j];
+            Point newpoint = scalefig * B[i][j + 1];
+            edges_base.push_back(Edge(prev, newpoint));
+            prev = newpoint;
+        }
+    }
+    // vertical lines
+    for (int i = 0; i < B.getRow() - 1; ++i){
+        for (int j = 0; j < B.getColumn(); ++j){
+            Point prev = scalefig * B[i][j];
+            Point newpoint = scalefig * B[i + 1][j];
+            edges_base.push_back(Edge(prev, newpoint));
+            prev = newpoint;
+        }
+    }
+
+    Point center(scalefig * row / 2, scalefig * column / 2, scalefig / 2);
+    figure_base = new Figure(edges_base, center, "Base surface", QPen(Qt::blue, 1, Qt::SolidLine));
 }
 
+
+void MainWindow::createBezierFigure(int accuracy)
+{
+    std::vector<Edge<Point>> edges_bezier;
+
+    Matrix<Point> bezier = createBezierSurface(accuracy, B);
+
+    double scalefig = 50;
+
+    // bezier points
+    // horizontal lines
+    for (int i = 0; i < bezier.getRow(); ++i){
+        for (int j = 0; j < bezier.getColumn() - 1; ++j){
+            Point prev = scalefig * bezier[i][j];
+            Point newpoint = scalefig * bezier[i][j + 1];
+            edges_bezier.push_back(Edge(prev, newpoint));
+            prev = newpoint;
+        }
+    }
+    // vertical lines
+    for (int i = 0; i < bezier.getRow() - 1; ++i){
+        for (int j = 0; j < bezier.getColumn(); ++j){
+            Point prev = scalefig * bezier[i][j];
+            Point newpoint = scalefig * bezier[i + 1][j];
+            edges_bezier.push_back(Edge(prev, newpoint));
+            prev = newpoint;
+        }
+    }
+
+    Point center(scalefig * row / 2, scalefig * column / 2, scalefig / 2);
+    figure_bezier = new Figure(edges_bezier, center, "Bezier surface", QPen(Qt::red, 1, Qt::SolidLine));
+}
+
+
+
+void MainWindow::on_scrollBarOX_valueChanged(int value)
+{
+    int diff_angle = value - prev_angle_x_;
+    prev_angle_x_ = value;
+    figure_base->rotationOX(diff_angle);
+    figure_bezier->rotationOX(diff_angle);
+    ui->canvas->Repaint();
+}
+
+
+void MainWindow::on_scrollBarOY_valueChanged(int value)
+{
+    int diff_angle = value - prev_angle_y_;
+    prev_angle_y_ = value;
+    figure_base->rotationOY(diff_angle);
+    figure_bezier->rotationOY(diff_angle);
+    ui->canvas->Repaint();
+}
+
+void MainWindow::on_scrollBarOZ_valueChanged(int value)
+{
+    int diff_angle = value - prev_angle_z_;
+    prev_angle_z_ = value;
+    figure_base->rotationOZ(diff_angle);
+    figure_bezier->rotationOZ(diff_angle);
+    ui->canvas->Repaint();
+}
 
 

@@ -36,7 +36,7 @@ public:
     const Matrix<T> operator- (const Matrix<T>&);
     Matrix<T>& operator= (const Matrix<T>&);
     bool operator== (const Matrix<T>&) const;
-    T* operator[](size_t i);
+    T*& operator[](size_t i);
 
     template<class N>
     friend std::ostream& operator<<(std::ostream&, const Matrix<N>&);
@@ -308,7 +308,7 @@ bool Matrix<T>::operator== (const Matrix<T>& other) const {
 
 
 template<class T>
-T *Matrix<T>::operator[](size_t i)
+T*& Matrix<T>::operator[](size_t i)
 {
     return mtx[i];
 }

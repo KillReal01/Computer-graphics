@@ -1,4 +1,4 @@
-#include "figure.h"
+﻿#include "figure.h"
 #include "matrix.h"
 #include "convert.h"
 #include <vector>
@@ -84,6 +84,7 @@ void Figure::rotationOX(int angle)
     Matrix<double> moveFromCenter = moveMatrix(center[0], center[1], center[2]);
     auto T = moveToCenter * rotate * moveFromCenter;
     convertFigure(T);
+    //convertFigure(rotate);
 }
 
 void Figure::rotationOY(int angle)
@@ -93,6 +94,7 @@ void Figure::rotationOY(int angle)
     Matrix<double> moveFromCenter = moveMatrix(center[0], center[1], center[2]);
     auto T = moveToCenter * rotate * moveFromCenter;
     convertFigure(T);
+    //convertFigure(rotate);
 }
 
 void Figure::rotationOZ(int angle)
@@ -102,6 +104,7 @@ void Figure::rotationOZ(int angle)
     Matrix<double> moveFromCenter = moveMatrix(center[0], center[1], center[2]);
     auto T = moveToCenter * rotate * moveFromCenter;
     convertFigure(T);
+    //convertFigure(rotate);
 }
 
 void Figure::setName(const QString &name){
