@@ -41,8 +41,6 @@ private:
     int row, column;
     Matrix<Point> B;
 
-    void createBasePoints();
-    void createBaseFigure();
-    void createBezierFigure(int);
+    void createRandomBezier(int row = 10, int column = 10, int accuracy = 50);
 };
 #endif // MAINWINDOW_H

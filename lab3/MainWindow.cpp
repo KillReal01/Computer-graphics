@@ -8,83 +8,20 @@
 #include "bezier.h"
 #include "figure.h"
 
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+namespace algorithms
 {
-    ui->setupUi(this);
-    this->setWindowTitle("Лабораторная работа №3");
 
-    row = 10;
-    column = 10;
-
-    createBasePoints();
-    createBaseFigure();
-
-    // точность для фигуры большой не ставить, факториалы умирают
-    createBezierFigure(50);
-
-    double length = 300;
-    double scale = 50;
-    double delta = 200;
-
-//    line_x = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length * 2, length, delta + length})},
-//                        Point(delta + length, length, delta + length), "X", QPen(Qt::black, 2, Qt::SolidLine));
-//    line_y = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length, length * 2, delta + length})},
-//                        Point(delta + length, length, delta + length), "Y", QPen(Qt::black, 2, Qt::SolidLine));
-//    line_z = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length, length, delta + length * 2})},
-//                        Point(delta + length, length, delta + length), "Z", QPen(Qt::black, 2, Qt::SolidLine));
-
-    figure_base->rotationOY(30);
-    figure_base->rotationOX(-30);
-    figure_base->rotationOZ(180);
-    ui->canvas->DrawItem(figure_base);
-
-    figure_bezier->rotationOY(30);
-    figure_bezier->rotationOX(-30);
-    figure_bezier->rotationOZ(180);
-    ui->canvas->DrawItem(figure_bezier);
-
-    ui->canvas->SetSceneRect(QPoint(0, 0), QPoint(700, 500));
-
-//    for (auto& obj : {line_x, line_y, line_z}) {
-//        obj->rotationOY(30);
-//        obj->rotationOX(-30);
-//        obj->rotationOZ(180);
-
-//        ui->canvas->DrawItem(obj);
-//        double x = obj->getData()[0].getEnd().getData()[0];
-//        double y = obj->getData()[0].getEnd().getData()[1];
-//        ui->canvas->AddText(obj->getName(), QFont("Times", 15), x, y);
-//    }
-
-    prev_angle_x_ = prev_angle_y_ = prev_angle_z_ = 0;
-    for (auto scroll_bar : {ui->scrollBarOX, ui->scrollBarOY, ui->scrollBarOZ}) {
-        scroll_bar->setRange(0, 360);
-        scroll_bar->setValue(0);
-    }
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-
-void MainWindow::createBasePoints(){
-    B = Matrix<Point>(row, column);
+Matrix<Point> createBasePoints(int row, int column, int rand = 5){
+    auto B = Matrix<Point>(row, column);
     for (int i = 0; i < B.getRow(); ++i){
         for (int j = 0; j < B.getColumn(); ++j){
-            //B[i][j] = Point(i, j, (rand() % 200) / 100.0);
-            B[i][j] = Point(i, j, rand() % 5);
-            //B[i][j] = Point(i, j, i + j);
+            B[i][j] = Point(i, j, std::rand() % rand);
         }
     }
-    //std::cout << "B\n" << B << "\n";
+    return B;
 }
 
-void MainWindow::createBaseFigure()
+Figure* createBaseFigure(Matrix<Point>& B)
 {
     std::vector<Edge<Point>> edges_base;
 
@@ -109,12 +46,11 @@ void MainWindow::createBaseFigure()
         }
     }
 
-    Point center(scalefig * row / 2, scalefig * column / 2, scalefig / 2);
-    figure_base = new Figure(edges_base, center, "Base surface", QPen(Qt::blue, 1, Qt::SolidLine));
+    Point center(scalefig * B.getRow() / 2, scalefig * B.getColumn() / 2, scalefig / 2);
+    return new Figure(edges_base, center, "Base surface", QPen(Qt::blue, 1, Qt::SolidLine));
 }
 
-
-void MainWindow::createBezierFigure(int accuracy)
+Figure* createBezierFigure(int accuracy, Matrix<Point>& B)
 {
     std::vector<Edge<Point>> edges_bezier;
 
@@ -142,8 +78,83 @@ void MainWindow::createBezierFigure(int accuracy)
         }
     }
 
-    Point center(scalefig * row / 2, scalefig * column / 2, scalefig / 2);
-    figure_bezier = new Figure(edges_bezier, center, "Bezier surface", QPen(Qt::red, 1, Qt::SolidLine));
+    Point center(scalefig * B.getRow() / 2, scalefig * B.getColumn() / 2, scalefig / 2);
+    return new Figure(edges_bezier, center, "Bezier surface", QPen(Qt::red, 1, Qt::SolidLine));
+}
+
+} // namespace algorithms
+
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+    , figure_base(nullptr)
+    , figure_bezier(nullptr)
+{
+    ui->setupUi(this);
+    this->setWindowTitle("Лабораторная работа №3");
+
+    createRandomBezier();
+
+    //double length = 300;
+    //double scale = 50;
+    //double delta = 200;
+//    line_x = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length * 2, length, delta + length})},
+//                        Point(delta + length, length, delta + length), "X", QPen(Qt::black, 2, Qt::SolidLine));
+//    line_y = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length, length * 2, delta + length})},
+//                        Point(delta + length, length, delta + length), "Y", QPen(Qt::black, 2, Qt::SolidLine));
+//    line_z = new Figure(std::vector<Edge<Point>>{Edge<Point>({delta + length, length, delta + length}, {delta + length, length, delta + length * 2})},
+//                        Point(delta + length, length, delta + length), "Z", QPen(Qt::black, 2, Qt::SolidLine));
+
+    ui->canvas->SetSceneRect(QPoint(0, 0), QPoint(700, 500));
+
+//    for (auto& obj : {line_x, line_y, line_z}) {
+//        obj->rotationOY(30);
+//        obj->rotationOX(-30);
+//        obj->rotationOZ(180);
+
+//        ui->canvas->DrawItem(obj);
+//        double x = obj->getData()[0].getEnd().getData()[0];
+//        double y = obj->getData()[0].getEnd().getData()[1];
+//        ui->canvas->AddText(obj->getName(), QFont("Times", 15), x, y);
+//    }
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::createRandomBezier(int row, int column, int accuracy)
+{
+    if (figure_base) {
+        delete figure_base;
+        figure_base = nullptr;
+    }
+    if (figure_bezier) {
+        delete figure_bezier;
+        figure_bezier = nullptr;
+    }
+
+    B = algorithms::createBasePoints(row, column);
+    figure_base = algorithms::createBaseFigure(B);
+    figure_bezier = algorithms::createBezierFigure(50, B);
+
+    figure_base->rotationOY(30);
+    figure_base->rotationOX(-30);
+    figure_base->rotationOZ(180);
+    ui->canvas->DrawItem(figure_base);
+
+    figure_bezier->rotationOY(30);
+    figure_bezier->rotationOX(-30);
+    figure_bezier->rotationOZ(180);
+    ui->canvas->DrawItem(figure_bezier);
+
+    prev_angle_x_ = prev_angle_y_ = prev_angle_z_ = 0;
+    for (auto scroll_bar : {ui->scrollBarOX, ui->scrollBarOY, ui->scrollBarOZ}) {
+        scroll_bar->setRange(0, 360);
+        scroll_bar->setValue(0);
+    }
 }
 
 
@@ -179,33 +190,6 @@ void MainWindow::on_scrollBarOZ_valueChanged(int value)
 
 void MainWindow::on_buttonCreateRandom_clicked()
 {
-    if (figure_base) {
-        delete figure_base;
-        figure_base = nullptr;
-    }
-    if (figure_bezier) {
-        delete figure_bezier;
-        figure_bezier = nullptr;
-    }
-
-    createBasePoints();
-    createBaseFigure();
-    createBezierFigure(50);
-
-    figure_base->rotationOY(30);
-    figure_base->rotationOX(-30);
-    figure_base->rotationOZ(180);
-    ui->canvas->DrawItem(figure_base);
-
-    figure_bezier->rotationOY(30);
-    figure_bezier->rotationOX(-30);
-    figure_bezier->rotationOZ(180);
-    ui->canvas->DrawItem(figure_bezier);
-
-    prev_angle_x_ = prev_angle_y_ = prev_angle_z_ = 0;
-    for (auto scroll_bar : {ui->scrollBarOX, ui->scrollBarOY, ui->scrollBarOZ}) {
-        scroll_bar->setRange(0, 360);
-        scroll_bar->setValue(0);
-    }
+    createRandomBezier();
 }
 
