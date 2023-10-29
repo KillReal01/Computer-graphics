@@ -3,19 +3,20 @@
 #include <QDebug>
 #include "vertex.h"
 
-const int SCREEN_WIDTH = 700;
-const int SCREEN_HEIGHT = 500;
+const std::int64_t Canvas::SCREEN_WIDTH = 700;
+const std::int64_t Canvas::SCREEN_HEIGHT = 500;
 
 Canvas::Canvas(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Canvas)
     , _pen(QPen(Qt::green, 1, Qt::SolidLine, Qt::FlatCap))
-    , _zoom(100)
+    , left_bottom_(0, 0)
+    , right_top_(SCREEN_WIDTH, SCREEN_HEIGHT)
 {
     ui->setupUi(this);
 
     _scene = new QGraphicsScene(this);
-    _scene->setSceneRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    UpdateSceneRect();
 
     ui->graphicsView->setScene(_scene);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
@@ -28,10 +29,38 @@ Canvas::~Canvas()
     delete _scene;
 }
 
-void Canvas::DrawFigure(const Figure& figure)
+void Canvas::UpdateSceneRect()
 {
-    //_cur_figure = figure;
-    //repaint();
+    _scene->setSceneRect(left_bottom_.x(), left_bottom_.y(), right_top_.x(), right_top_.y());
+}
+
+void Canvas::SetSceneRect(const QPoint& left_bottom, const QPoint& right_top)
+{
+    SetSceneRectLeftBottom(left_bottom);
+    SetSceneRectRightUp(right_top);
+    UpdateSceneRect();
+}
+
+void Canvas::SetSceneRectLeftBottom(const QPoint& left_bottom)
+{
+    left_bottom_ = left_bottom;
+    UpdateSceneRect();
+}
+
+void Canvas::SetSceneRectRightUp(const QPoint& right_top)
+{
+    right_top_ = right_top;
+    UpdateSceneRect();
+}
+
+const QPoint& Canvas::GetSceneRectLeftBottom() const
+{
+    return left_bottom_;
+}
+
+const QPoint& Canvas::GetSceneRectRightUp() const
+{
+    return right_top_;
 }
 
 void Canvas::AddText(const QString &str, const QFont& font, int x, int y)

@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
     figure_bezier->rotationOZ(180);
     ui->canvas->DrawItem(figure_bezier);
 
+    ui->canvas->SetSceneRect(QPoint(0, 0), QPoint(700, 500));
+
 //    for (auto& obj : {line_x, line_y, line_z}) {
 //        obj->rotationOY(30);
 //        obj->rotationOX(-30);
