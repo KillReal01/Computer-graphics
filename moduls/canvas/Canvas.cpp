@@ -63,10 +63,11 @@ const QPoint& Canvas::GetSceneRectRightUp() const
     return right_top_;
 }
 
-void Canvas::AddText(const QString &str, const QFont& font, int x, int y)
+QGraphicsTextItem* Canvas::AddText(const QString &str, const QFont& font, int x, int y)
 {
-    QGraphicsTextItem *text = _scene->addText(str, font);
+    QGraphicsTextItem* text = _scene->addText(str, font);
     text->setPos(x, y);
+    return text;
 }
 
 void Canvas::Repaint()
@@ -74,37 +75,7 @@ void Canvas::Repaint()
     _scene->update();
 }
 
-void Canvas::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event);
-}
-
-void Canvas::DrawLines(const std::vector<std::pair<int, int>>& arr)
-{
-    for (int i = 0; i < arr.size() - 1; i++) {
-        const auto& pointA = arr[i];
-        const auto& pointB = arr[i + 1];
-        auto* line = new Line(pointA.first, pointA.second, pointB.first, pointB.second);
-        _scene->addItem(line);
-    }
-}
-
-void Canvas::DrawLines(const std::vector<Line*>& arr)
-{
-    for (int i = 0; i < arr.size(); i++) {
-        _scene->addItem(arr[i]);
-    }
-}
-
-
 void Canvas::DrawItem(QGraphicsItem* item)
 {
     _scene->addItem(item);
-}
-
-
-void Canvas::Rotation(int angle)
-{
-    _cur_figure.rotationOZ(angle);
-    repaint();
 }

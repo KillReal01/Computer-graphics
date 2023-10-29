@@ -147,7 +147,6 @@ void MainWindow::createBezierFigure(int accuracy)
 }
 
 
-
 void MainWindow::on_scrollBarOX_valueChanged(int value)
 {
     int diff_angle = value - prev_angle_x_;
@@ -176,4 +175,37 @@ void MainWindow::on_scrollBarOZ_valueChanged(int value)
     ui->canvas->Repaint();
 }
 
+
+
+void MainWindow::on_buttonCreateRandom_clicked()
+{
+    if (figure_base) {
+        delete figure_base;
+        figure_base = nullptr;
+    }
+    if (figure_bezier) {
+        delete figure_bezier;
+        figure_bezier = nullptr;
+    }
+
+    createBasePoints();
+    createBaseFigure();
+    createBezierFigure(50);
+
+    figure_base->rotationOY(30);
+    figure_base->rotationOX(-30);
+    figure_base->rotationOZ(180);
+    ui->canvas->DrawItem(figure_base);
+
+    figure_bezier->rotationOY(30);
+    figure_bezier->rotationOX(-30);
+    figure_bezier->rotationOZ(180);
+    ui->canvas->DrawItem(figure_bezier);
+
+    prev_angle_x_ = prev_angle_y_ = prev_angle_z_ = 0;
+    for (auto scroll_bar : {ui->scrollBarOX, ui->scrollBarOY, ui->scrollBarOZ}) {
+        scroll_bar->setRange(0, 360);
+        scroll_bar->setValue(0);
+    }
+}
 

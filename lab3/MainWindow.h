@@ -22,6 +22,8 @@ private slots:
     void on_scrollBarOX_valueChanged(int value);
     void on_scrollBarOY_valueChanged(int value);
 
+    void on_buttonCreateRandom_clicked();
+
 private:
     Ui::MainWindow *ui;
 

@@ -23,11 +23,8 @@ private:
 public:
     explicit Canvas(QWidget *parent = nullptr);
     ~Canvas();
-    void AddText(const QString& str, const QFont& font, int x, int y);
-    void DrawLines(const std::vector<std::pair<int, int>>& arr);
-    void DrawLines(const std::vector<Line*>& arr);
+    QGraphicsTextItem* AddText(const QString& str, const QFont& font, int x, int y);
     void setPen(const QPen& pen) { _pen = pen; }
-    void Rotation(int angle);
     void DrawItem(QGraphicsItem* item);
     void Repaint();
 
@@ -38,13 +35,11 @@ public:
     const QPoint& GetSceneRectLeftBottom() const;
     const QPoint& GetSceneRectRightUp() const;
 
-protected:
-    void paintEvent(QPaintEvent *event);
+private:
     void UpdateSceneRect();
 
 private:
     Ui::Canvas *ui;
-    Figure _cur_figure;
     QPen _pen;
 
     QGraphicsScene* _scene;
