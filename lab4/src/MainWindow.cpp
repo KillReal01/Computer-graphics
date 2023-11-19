@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowTitle("Лабораторная работа №4");
-    _window = QRectF(200, 200, 250, 250);
+    _window = QRectF(0, 0, 0, 0);
     randomSegments(count_lines);
 }
 
@@ -175,8 +175,10 @@ void MainWindow::repaint()
         delete line;
     _convert_segments.clear();
 
-    _convert_segments = algorithm(_segments);
-    ui->widget->DrawLines(_convert_segments);
+    if (_window != QRectF(0,0,0,0)){
+        _convert_segments = algorithm(_segments);
+        ui->widget->DrawLines(_convert_segments);
+    }
 }
 
 
