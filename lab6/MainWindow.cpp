@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setWindowTitle("Лабораторная работа №1");
+    this->setWindowTitle("Лабораторная работа №6");
 
     double side = 200;
     double delta = 200;
